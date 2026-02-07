@@ -1,0 +1,30 @@
+[
+  {
+    "id": "sec-001",
+    "name": "Work",
+    "sort_order": 1,
+    "subsections": [
+      {"id": "subsec-001", "name": "Frontend", "sort_order": 1, "section_id": "sec-001"},
+      {"id": "subsec-002", "name": "Backend", "sort_order": 2, "section_id": "sec-001"},
+      {"id": "subsec-003", "name": "DevOps", "sort_order": 3, "section_id": "sec-001"}
+    ]
+  },
+  {
+    "id": "sec-002",
+    "name": "Personal",
+    "sort_order": 2,
+    "subsections": [
+      {"id": "subsec-004", "name": "Health", "sort_order": 1, "section_id": "sec-002"},
+      {"id": "subsec-005", "name": "Finance", "sort_order": 2, "section_id": "sec-002"}
+    ]
+  },
+  {
+    "id": "sec-003",
+    "name": "Learning",
+    "sort_order": 3,
+    "subsections": [
+      {"id": "subsec-006", "name": "Courses", "sort_order": 1, "section_id": "sec-003"},
+      {"id": "subsec-007", "name": "Reading", "sort_order": 2, "section_id": "sec-003"}
+    ]
+  }
+]

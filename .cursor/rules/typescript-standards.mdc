@@ -1,0 +1,41 @@
+---
+description: TypeScript and coding standards for the-todo-way
+globs: ["src/**/*.ts", "src/**/*.tsx"]
+---
+
+# TypeScript Standards
+
+## Strict Typing
+
+- TypeScript strict mode is ON (`strict: true`, `noUncheckedIndexedAccess: true`)
+- NEVER use `any`. Use `unknown` + type guards or proper generics.
+- Prefer `interface` over `type` for object shapes (extendable)
+- Use `type` for unions, intersections, and computed types
+
+## Naming Conventions
+
+- Components: PascalCase files and exports (`TodoCard.tsx`, `export function TodoCard`)
+- Hooks: `use` prefix, camelCase (`useTodos.ts`, `export function useTodos`)
+- Stores: camelCase with Store suffix (`todoStore.ts`, `export const useTodoStore`)
+- Utilities: camelCase (`dateHelpers.ts`, `export function formatDuration`)
+- Types: PascalCase (`interface Todo`, `type Priority`)
+- Constants: UPPER_SNAKE_CASE (`const MAX_DURATION_MINUTES = 480`)
+
+## Code Style
+
+- Functional components only (no class components)
+- Prefer named exports over default exports
+- Destructure props in function signature
+- Use early returns for guard clauses
+- Keep functions under 50 lines; extract helpers if longer
+
+## Imports
+
+- Use `@/` path alias for `src/` imports
+- Group imports: (1) React/external libs, (2) components, (3) hooks/stores, (4) types, (5) utils
+- No barrel files (index.ts re-exports) -- import directly from source
+
+## Commit Messages
+
+- Conventional Commits: `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, `test:`
+- Example: `feat: add TodoCard component with priority indicator`

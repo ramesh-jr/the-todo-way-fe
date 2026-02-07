@@ -1,0 +1,410 @@
+[
+  {
+    "id": "todo-001",
+    "title": "Review pull request for authentication module",
+    "description": "Check the new JWT implementation and provide feedback",
+    "scheduled_date": "2026-02-09T09:00:00Z",
+    "deadline_date": "2026-02-09T17:00:00Z",
+    "duration_minutes": 60,
+    "priority": "p1",
+    "location": "Office",
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-001",
+    "subsection_id": "subsec-002",
+    "labels": [
+      {"id": "lbl-001", "name": "work", "color": "#3B82F6"},
+      {"id": "lbl-003", "name": "urgent", "color": "#EF4444"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-07T08:30:00Z",
+    "updated_at": "2026-02-07T08:30:00Z"
+  },
+  {
+    "id": "todo-002",
+    "title": "Fix responsive layout issues on mobile",
+    "description": "Dashboard breaks on screens smaller than 375px",
+    "scheduled_date": "2026-02-09T14:00:00Z",
+    "deadline_date": "2026-02-10T12:00:00Z",
+    "duration_minutes": 90,
+    "priority": "p2",
+    "location": null,
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-001",
+    "subsection_id": "subsec-001",
+    "labels": [
+      {"id": "lbl-001", "name": "work", "color": "#3B82F6"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-07T09:15:00Z",
+    "updated_at": "2026-02-07T09:15:00Z"
+  },
+  {
+    "id": "todo-003",
+    "title": "Schedule dentist appointment",
+    "description": null,
+    "scheduled_date": null,
+    "deadline_date": "2026-02-15T18:00:00Z",
+    "duration_minutes": 30,
+    "priority": "p3",
+    "location": "Dental Clinic",
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-002",
+    "subsection_id": "subsec-004",
+    "labels": [
+      {"id": "lbl-002", "name": "personal", "color": "#10B981"},
+      {"id": "lbl-005", "name": "errand", "color": "#F97316"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-07T10:00:00Z",
+    "updated_at": "2026-02-07T10:00:00Z"
+  },
+  {
+    "id": "todo-004",
+    "title": "Complete React hooks course module 3",
+    "description": "Focus on useMemo and useCallback optimization",
+    "scheduled_date": "2026-02-10T19:00:00Z",
+    "deadline_date": "2026-02-12T23:59:59Z",
+    "duration_minutes": 120,
+    "priority": "p2",
+    "location": "Home",
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-003",
+    "subsection_id": "subsec-006",
+    "labels": [
+      {"id": "lbl-002", "name": "personal", "color": "#10B981"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-07T11:20:00Z",
+    "updated_at": "2026-02-07T11:20:00Z"
+  },
+  {
+    "id": "todo-005",
+    "title": "Team standup meeting",
+    "description": "Daily sync with frontend team",
+    "scheduled_date": "2026-02-10T10:00:00Z",
+    "deadline_date": null,
+    "duration_minutes": 30,
+    "priority": "p1",
+    "location": "Conference Room A",
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-001",
+    "subsection_id": null,
+    "labels": [
+      {"id": "lbl-001", "name": "work", "color": "#3B82F6"},
+      {"id": "lbl-004", "name": "meeting", "color": "#8B5CF6"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-07T12:00:00Z",
+    "updated_at": "2026-02-07T12:00:00Z"
+  },
+  {
+    "id": "todo-006",
+    "title": "Grocery shopping",
+    "description": "Buy ingredients for weekend meal prep",
+    "scheduled_date": "2026-02-11T16:00:00Z",
+    "deadline_date": null,
+    "duration_minutes": 60,
+    "priority": "p4",
+    "location": "Supermarket",
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-002",
+    "subsection_id": null,
+    "labels": [
+      {"id": "lbl-002", "name": "personal", "color": "#10B981"},
+      {"id": "lbl-005", "name": "errand", "color": "#F97316"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-07T13:30:00Z",
+    "updated_at": "2026-02-07T13:30:00Z"
+  },
+  {
+    "id": "todo-007",
+    "title": "Set up CI/CD pipeline for staging",
+    "description": "Configure GitHub Actions for automated deployments",
+    "scheduled_date": "2026-02-10T11:00:00Z",
+    "deadline_date": "2026-02-14T17:00:00Z",
+    "duration_minutes": 120,
+    "priority": "p2",
+    "location": null,
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-001",
+    "subsection_id": "subsec-003",
+    "labels": [
+      {"id": "lbl-001", "name": "work", "color": "#3B82F6"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-07T14:00:00Z",
+    "updated_at": "2026-02-07T14:00:00Z"
+  },
+  {
+    "id": "todo-008",
+    "title": "Read Chapter 5 of Clean Code",
+    "description": null,
+    "scheduled_date": "2026-02-12T20:00:00Z",
+    "deadline_date": null,
+    "duration_minutes": 45,
+    "priority": "p3",
+    "location": "Coffee Shop",
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-003",
+    "subsection_id": "subsec-007",
+    "labels": [
+      {"id": "lbl-002", "name": "personal", "color": "#10B981"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-07T15:00:00Z",
+    "updated_at": "2026-02-07T15:00:00Z"
+  },
+  {
+    "id": "todo-009",
+    "title": "Update expense tracking spreadsheet",
+    "description": "Log January expenses and categorize",
+    "scheduled_date": null,
+    "deadline_date": "2026-02-10T23:59:59Z",
+    "duration_minutes": 30,
+    "priority": "p3",
+    "location": "Home",
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-002",
+    "subsection_id": "subsec-005",
+    "labels": [
+      {"id": "lbl-002", "name": "personal", "color": "#10B981"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-07T16:00:00Z",
+    "updated_at": "2026-02-07T16:00:00Z"
+  },
+  {
+    "id": "todo-010",
+    "title": "Refactor user profile component",
+    "description": "Extract reusable hooks and improve test coverage",
+    "scheduled_date": "2026-02-11T09:00:00Z",
+    "deadline_date": "2026-02-13T18:00:00Z",
+    "duration_minutes": 90,
+    "priority": "p2",
+    "location": null,
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-001",
+    "subsection_id": "subsec-001",
+    "labels": [
+      {"id": "lbl-001", "name": "work", "color": "#3B82F6"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-07T17:00:00Z",
+    "updated_at": "2026-02-07T17:00:00Z"
+  },
+  {
+    "id": "todo-011",
+    "title": "Morning gym session",
+    "description": "Strength training - upper body focus",
+    "scheduled_date": "2026-02-11T07:00:00Z",
+    "deadline_date": null,
+    "duration_minutes": 60,
+    "priority": "p3",
+    "location": "Gym",
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-002",
+    "subsection_id": "subsec-004",
+    "labels": [
+      {"id": "lbl-002", "name": "personal", "color": "#10B981"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-07T18:00:00Z",
+    "updated_at": "2026-02-07T18:00:00Z"
+  },
+  {
+    "id": "todo-012",
+    "title": "Research new state management library",
+    "description": "Compare Zustand vs Jotai for upcoming project",
+    "scheduled_date": null,
+    "deadline_date": null,
+    "duration_minutes": 60,
+    "priority": "p4",
+    "location": null,
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-001",
+    "subsection_id": "subsec-001",
+    "labels": [
+      {"id": "lbl-001", "name": "work", "color": "#3B82F6"},
+      {"id": "lbl-006", "name": "idea", "color": "#EC4899"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-07T19:00:00Z",
+    "updated_at": "2026-02-07T19:00:00Z"
+  },
+  {
+    "id": "todo-013",
+    "title": "Client presentation prep",
+    "description": "Prepare slides for Q1 roadmap discussion",
+    "scheduled_date": "2026-02-12T13:00:00Z",
+    "deadline_date": "2026-02-12T17:00:00Z",
+    "duration_minutes": 120,
+    "priority": "p1",
+    "location": "Office",
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-001",
+    "subsection_id": null,
+    "labels": [
+      {"id": "lbl-001", "name": "work", "color": "#3B82F6"},
+      {"id": "lbl-003", "name": "urgent", "color": "#EF4444"},
+      {"id": "lbl-004", "name": "meeting", "color": "#8B5CF6"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-07T20:00:00Z",
+    "updated_at": "2026-02-07T20:00:00Z"
+  },
+  {
+    "id": "todo-014",
+    "title": "Write unit tests for API service",
+    "description": "Cover all endpoints in the user service",
+    "scheduled_date": "2026-02-11T15:00:00Z",
+    "deadline_date": "2026-02-15T18:00:00Z",
+    "duration_minutes": 90,
+    "priority": "p3",
+    "location": null,
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-001",
+    "subsection_id": "subsec-002",
+    "labels": [
+      {"id": "lbl-001", "name": "work", "color": "#3B82F6"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-07T21:00:00Z",
+    "updated_at": "2026-02-07T21:00:00Z"
+  },
+  {
+    "id": "todo-015",
+    "title": "Plan weekend hiking trip",
+    "description": "Research trails and book accommodation",
+    "scheduled_date": null,
+    "deadline_date": "2026-02-13T23:59:59Z",
+    "duration_minutes": 45,
+    "priority": "p4",
+    "location": null,
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-002",
+    "subsection_id": null,
+    "labels": [
+      {"id": "lbl-002", "name": "personal", "color": "#10B981"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-07T22:00:00Z",
+    "updated_at": "2026-02-07T22:00:00Z"
+  },
+  {
+    "id": "todo-016",
+    "title": "Optimize database queries",
+    "description": "Add indexes and review slow query logs",
+    "scheduled_date": "2026-02-12T10:00:00Z",
+    "deadline_date": null,
+    "duration_minutes": 120,
+    "priority": "p2",
+    "location": null,
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-001",
+    "subsection_id": "subsec-002",
+    "labels": [
+      {"id": "lbl-001", "name": "work", "color": "#3B82F6"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-07T23:00:00Z",
+    "updated_at": "2026-02-07T23:00:00Z"
+  },
+  {
+    "id": "todo-017",
+    "title": "Update project documentation",
+    "description": "Add API endpoint documentation and setup instructions",
+    "scheduled_date": "2026-02-13T14:00:00Z",
+    "deadline_date": "2026-02-16T18:00:00Z",
+    "duration_minutes": 60,
+    "priority": "p3",
+    "location": null,
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-001",
+    "subsection_id": "subsec-003",
+    "labels": [
+      {"id": "lbl-001", "name": "work", "color": "#3B82F6"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-08T08:00:00Z",
+    "updated_at": "2026-02-08T08:00:00Z"
+  },
+  {
+    "id": "todo-018",
+    "title": "Complete TypeScript advanced types course",
+    "description": "Finish module on conditional types and mapped types",
+    "scheduled_date": "2026-02-13T19:00:00Z",
+    "deadline_date": null,
+    "duration_minutes": 90,
+    "priority": "p3",
+    "location": "Home",
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-003",
+    "subsection_id": "subsec-006",
+    "labels": [
+      {"id": "lbl-002", "name": "personal", "color": "#10B981"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-08T09:00:00Z",
+    "updated_at": "2026-02-08T09:00:00Z"
+  },
+  {
+    "id": "todo-019",
+    "title": "Review monthly budget",
+    "description": "Compare actual vs planned expenses",
+    "scheduled_date": null,
+    "deadline_date": "2026-02-14T23:59:59Z",
+    "duration_minutes": 30,
+    "priority": "p4",
+    "location": "Home",
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-002",
+    "subsection_id": "subsec-005",
+    "labels": [
+      {"id": "lbl-002", "name": "personal", "color": "#10B981"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-08T10:00:00Z",
+    "updated_at": "2026-02-08T10:00:00Z"
+  },
+  {
+    "id": "todo-020",
+    "title": "Design new feature mockups",
+    "description": "Create wireframes for user dashboard improvements",
+    "scheduled_date": "2026-02-13T09:00:00Z",
+    "deadline_date": null,
+    "duration_minutes": 60,
+    "priority": "p4",
+    "location": null,
+    "is_completed": false,
+    "completed_at": null,
+    "section_id": "sec-001",
+    "subsection_id": "subsec-001",
+    "labels": [
+      {"id": "lbl-001", "name": "work", "color": "#3B82F6"},
+      {"id": "lbl-006", "name": "idea", "color": "#EC4899"}
+    ],
+    "reminders": [],
+    "created_at": "2026-02-08T11:00:00Z",
+    "updated_at": "2026-02-08T11:00:00Z"
+  }
+]

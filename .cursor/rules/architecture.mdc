@@ -1,0 +1,38 @@
+---
+description: Frontend architecture rules for the-todo-way
+globs: ["src/**/*.ts", "src/**/*.tsx"]
+---
+
+# Architecture Rules
+
+## Layered Structure
+
+- **Pages** (`src/pages/`): Route-level components. Import layout + domain components. No business logic.
+- **Components** (`src/components/{domain}/`): Reusable UI. Receive data via props. May call store actions.
+- **Stores** (`src/stores/`): Zustand stores. Call data provider for reads, manage state for writes.
+- **Data Provider** (`src/data/provider.ts`): Single abstraction over data source (static JSON now, API later). Stores import ONLY from provider, never from JSON files directly.
+- **Types** (`src/types/`): Shared TypeScript interfaces. Imported by all layers.
+- **Hooks** (`src/hooks/`): Custom hooks that compose store access + side effects.
+
+## Import Rules
+
+- Components NEVER import from `src/data/*.json` directly
+- Components may import from stores (`useXxxStore`)
+- Stores import ONLY from `src/data/provider.ts` for data access
+- Pages import from components and hooks only
+- No circular imports between stores
+
+## Component Rules
+
+- One component per file
+- Co-locate tests: `TodoCard.tsx` + `TodoCard.test.tsx`
+- Props interfaces defined in the same file, exported if shared
+- Use `cn()` from `src/lib/utils.ts` for conditional classnames
+- All user-facing text should be in the component (no i18n for now)
+
+## State Management
+
+- 3 stores only: `todoStore`, `sectionStore`, `uiStore`
+- Stores are independent (no cross-store imports)
+- `uiStore` uses Zustand `persist` middleware (localStorage)
+- Mutations follow optimistic update pattern (see data-provider.mdc)

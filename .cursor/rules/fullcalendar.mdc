@@ -1,0 +1,96 @@
+---
+description: FullCalendar integration patterns for the-todo-way
+globs: ["src/components/calendar/**", "src/pages/CalendarPage*", "src/pages/LandingPage*"]
+---
+
+# FullCalendar Integration Rules
+
+## Packages (all MIT, free)
+
+- `@fullcalendar/core`
+- `@fullcalendar/react`
+- `@fullcalendar/timegrid` (Day, Week, Working Week, 3-Day views)
+- `@fullcalendar/daygrid` (Month view)
+- `@fullcalendar/interaction` (drag-and-drop, dateClick, selectable)
+
+## Views Configuration
+
+```tsx
+views: {
+  timeGridWorkWeek: {
+    type: 'timeGrid',
+    duration: { weeks: 1 },
+    weekends: false,
+  },
+  timeGridThreeDay: {
+    type: 'timeGrid',
+    duration: { days: 3 },
+  },
+}
+initialView: 'timeGridWorkWeek'
+```
+
+Available views: `timeGridDay`, `timeGridThreeDay`, `timeGridWorkWeek`, `timeGridWeek`, `dayGridMonth`
+
+## Core Settings
+
+```
+slotMinTime="06:00:00"
+slotMaxTime="24:00:00"
+slotDuration="00:15:00"
+nowIndicator={true}
+editable={true}
+droppable={true}
+selectable={true}
+```
+
+## Todo-to-Event Mapping
+
+```typescript
+function todoToFCEvent(todo: Todo): EventInput {
+  return {
+    id: todo.id,
+    title: todo.title,
+    start: todo.scheduled_date ?? undefined,
+    end: todo.scheduled_date && todo.duration_minutes
+      ? addMinutes(new Date(todo.scheduled_date), todo.duration_minutes).toISOString()
+      : undefined,
+    allDay: false,
+    backgroundColor: priorityColors[todo.priority],
+    borderColor: priorityColors[todo.priority],
+    extendedProps: { todoId: todo.id, priority: todo.priority }
+  }
+}
+```
+
+## Event Callbacks
+
+- `eventClick` -> open TodoDetailPopup (`uiStore.openTodoDetail(id)`)
+- `eventDrop` -> reschedule (`todoStore.scheduleTodo(id, newDate)`)
+- `eventResize` -> change duration (`todoStore.updateTodo(id, { duration_minutes })`)
+- `eventReceive` -> external drop from Inbox (`todoStore.scheduleTodo(id, date, duration)`)
+- `dateClick` -> open CreateTodoDialog with date pre-filled (`uiStore.openCreateDialog({ scheduled_date })`)
+
+## External Drag (Inbox -> Calendar)
+
+Use FullCalendar's built-in `Draggable` class (NOT @dnd-kit for calendar interactions):
+
+```typescript
+import { Draggable } from '@fullcalendar/interaction'
+
+// In Inbox panel useEffect:
+const draggable = new Draggable(containerRef.current, {
+  itemSelector: '.todo-card[data-event]',
+  eventData: (el) => ({
+    title: el.dataset.title,
+    duration: el.dataset.duration || '00:30',
+    extendedProps: { todoId: el.dataset.todoId }
+  })
+})
+```
+
+Todo cards that are draggable must have `data-event`, `data-title`, `data-duration`, `data-todo-id` attributes.
+
+## CSS Theming
+
+Override FullCalendar CSS variables to match our design system in `src/styles/fullcalendar.css`. Use `--fc-*` variables. Ensure dark mode compatibility.

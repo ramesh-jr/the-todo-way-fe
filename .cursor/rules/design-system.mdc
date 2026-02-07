@@ -1,0 +1,55 @@
+---
+description: Design system tokens and UI rules for the-todo-way
+globs: ["src/**/*.tsx", "src/**/*.css"]
+---
+
+# Design System Rules
+
+## Colors (CSS Custom Properties)
+
+All colors are defined as HSL values in `src/styles/globals.css`. Components must use Tailwind classes that reference these tokens. NEVER hardcode hex/rgb values in components.
+
+### Brand Colors
+- Primary: `bg-primary` / `text-primary` (Indigo-600, `#4F46E5`)
+- Accent: `bg-accent` (Amber-500, `#F59E0B`)
+- Destructive: `bg-destructive` (Red-600, `#DC2626`)
+- Success: Use `text-emerald-600` / `bg-emerald-50`
+
+### Priority Colors (Semantic)
+- P1 Critical: `text-red-500` / `bg-red-50` / border `border-red-500`
+- P2 High: `text-orange-500` / `bg-orange-50` / border `border-orange-500`
+- P3 Medium: `text-blue-500` / `bg-blue-50` / border `border-blue-500`
+- P4 Low: `text-slate-400` / `bg-slate-50` / border `border-slate-300`
+
+### Surfaces
+- Background: `bg-background` (white / slate-950 dark)
+- Surface: `bg-card` (slate-50 / slate-900 dark) -- for cards, panels
+- Border: `border-border` (slate-200 / slate-700 dark)
+
+## Typography
+
+- Font: Inter (variable)
+- App body text: `text-sm` (14px) -- compact like Todoist
+- Headings: `text-2xl font-bold` (H1), `text-xl font-semibold` (H2), `text-lg font-semibold` (H3)
+- Caption/meta: `text-xs font-medium text-muted-foreground`
+
+## Spacing
+
+- Card padding: `p-3` (12px)
+- Panel padding: `p-4` (16px)
+- List item gap: `gap-2` (8px)
+- Section gap: `gap-4` (16px)
+
+## Component Patterns
+
+- Cards: `rounded-lg shadow-sm border` + `hover:shadow-md transition-shadow`
+- Buttons: Use shadcn `<Button>` variants (default, destructive, outline, ghost)
+- Inputs: Use shadcn `<Input>`, `<Textarea>`, `<Select>`
+- Dialogs: Use shadcn `<Dialog>` with `shadow-lg`
+- Badges/Tags: `rounded-full px-2 py-0.5 text-xs font-medium`
+
+## Dark Mode
+
+- Tailwind `class` strategy (`.dark` class on `<html>`)
+- All component colors use semantic tokens that auto-switch
+- FullCalendar CSS variables override in `.dark` scope

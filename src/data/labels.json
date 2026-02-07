@@ -1,0 +1,8 @@
+[
+  {"id": "lbl-001", "name": "work", "color": "#3B82F6"},
+  {"id": "lbl-002", "name": "personal", "color": "#10B981"},
+  {"id": "lbl-003", "name": "urgent", "color": "#EF4444"},
+  {"id": "lbl-004", "name": "meeting", "color": "#8B5CF6"},
+  {"id": "lbl-005", "name": "errand", "color": "#F97316"},
+  {"id": "lbl-006", "name": "idea", "color": "#EC4899"}
+]

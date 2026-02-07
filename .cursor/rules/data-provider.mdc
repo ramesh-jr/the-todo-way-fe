@@ -1,0 +1,60 @@
+---
+description: Data provider abstraction for static JSON to API swap
+globs: ["src/data/**", "src/stores/**"]
+---
+
+# Data Provider Rules
+
+## Architecture
+
+`src/data/provider.ts` is the SINGLE point of abstraction between the UI and data source.
+
+Currently: returns static JSON data from `src/data/*.json`
+Future: swap to `src/data/apiProvider.ts` (axios calls to real backend)
+
+## Current Provider (Static JSON)
+
+```typescript
+// src/data/provider.ts
+import todosData from './todos.json'
+import sectionsData from './sections.json'
+import labelsData from './labels.json'
+
+export const dataProvider = {
+  todos: {
+    list: (): Todo[] => todosData as Todo[],
+    get: (id: string): Todo | undefined => (todosData as Todo[]).find(t => t.id === id),
+  },
+  sections: {
+    list: (): Section[] => sectionsData as Section[],
+  },
+  labels: {
+    list: (): Label[] => labelsData as Label[],
+  },
+}
+```
+
+## Store Usage Pattern
+
+Stores call `dataProvider.xxx.list()` to seed initial state. Mutations (create, update, delete) operate in-memory on the Zustand store state only -- data resets on page reload. This is expected during frontend development.
+
+```typescript
+fetchTodos: () => {
+  const todos = dataProvider.todos.list()
+  set({ todos: new Map(todos.map(t => [t.id, t])) })
+}
+```
+
+## Rules
+
+- Stores NEVER import from `src/data/*.json` directly
+- Stores ALWAYS go through `dataProvider`
+- Mutation signatures must match future API-backed versions
+- When creating new items in-memory, use `Date.now()` for IDs
+
+## Future Swap (When BE is ready)
+
+1. Create `src/data/apiProvider.ts` with same interface but backed by axios
+2. Change one line in `provider.ts`: `export { apiDataProvider as dataProvider } from './apiProvider'`
+3. Add optimistic update pattern to store mutations (snapshot -> set -> try API -> catch rollback)
+4. Zero component changes needed
