@@ -27,7 +27,7 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-sm shadow-lg">
-        <CardHeader className="items-center text-center">
+        <CardHeader className="items-center justify-items-center text-center">
           <div className="flex size-12 items-center justify-center rounded-full bg-primary/10">
             <Lock className="size-6 text-primary" />
           </div>
