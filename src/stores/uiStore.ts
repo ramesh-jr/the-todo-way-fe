@@ -142,3 +142,17 @@ export const useUIStore = create<UIState>()(
     },
   ),
 )
+
+// ------------------------------------------------------------
+// OS theme change listener
+// When "system" is selected, react to OS dark/light switches
+// in real time (no page reload needed).
+// ------------------------------------------------------------
+
+const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
+mediaQuery.addEventListener("change", () => {
+  const { theme } = useUIStore.getState()
+  if (theme === "system") {
+    applyThemeToDOM("system")
+  }
+})
