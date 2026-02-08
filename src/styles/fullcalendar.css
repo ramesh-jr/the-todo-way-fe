@@ -1,0 +1,189 @@
+/* ============================================================
+ * FullCalendar Theme Overrides
+ * Maps FullCalendar CSS variables to our design system tokens.
+ * Dark mode is handled via the .dark class on <html>.
+ * Ref: docs/build-guide.md FE-7
+ * ============================================================ */
+
+/* ─── Light mode ─────────────────────────────────────────── */
+
+:root {
+  --fc-border-color: var(--border);
+  --fc-page-bg-color: var(--background);
+  --fc-neutral-bg-color: var(--muted);
+  --fc-neutral-text-color: var(--muted-foreground);
+  --fc-today-bg-color: oklch(0.511 0.262 276.966 / 0.06);
+  --fc-now-indicator-color: oklch(0.511 0.262 276.966);
+  --fc-event-text-color: #ffffff;
+  --fc-small-font-size: 0.8rem;
+}
+
+/* ─── Dark mode ──────────────────────────────────────────── */
+
+.dark {
+  --fc-border-color: var(--border);
+  --fc-page-bg-color: var(--background);
+  --fc-neutral-bg-color: var(--muted);
+  --fc-neutral-text-color: var(--muted-foreground);
+  --fc-today-bg-color: oklch(0.585 0.233 277.117 / 0.08);
+  --fc-now-indicator-color: oklch(0.585 0.233 277.117);
+  --fc-event-text-color: #ffffff;
+}
+
+/* ─── Layout ─────────────────────────────────────────────── */
+
+.fc {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Remove default toolbar — we use our own CalendarToolbar */
+.fc .fc-header-toolbar {
+  display: none !important;
+}
+
+/* ─── Day header ─────────────────────────────────────────── */
+
+.fc .fc-col-header-cell {
+  padding: 8px 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+  border-bottom: 1px solid var(--border);
+}
+
+.fc .fc-col-header-cell-cushion {
+  padding: 6px 4px;
+}
+
+/* ─── Time slots ─────────────────────────────────────────── */
+
+.fc .fc-timegrid-slot {
+  height: 2.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.fc .fc-timegrid-slot-minor {
+  border-bottom-style: dotted;
+  border-bottom-color: var(--border);
+}
+
+.fc .fc-timegrid-slot-label-cushion {
+  font-size: 0.7rem;
+  color: var(--muted-foreground);
+  padding: 0 8px;
+}
+
+/* ─── Now indicator ──────────────────────────────────────── */
+
+.fc .fc-timegrid-now-indicator-line {
+  border-color: var(--fc-now-indicator-color);
+  border-width: 2px;
+}
+
+.fc .fc-timegrid-now-indicator-arrow {
+  border-color: var(--fc-now-indicator-color);
+  border-width: 6px;
+}
+
+/* ─── Events ─────────────────────────────────────────────── */
+
+.fc .fc-event {
+  border-radius: 6px;
+  border: none;
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: opacity 0.15s ease, box-shadow 0.15s ease;
+}
+
+.fc .fc-event:hover {
+  opacity: 0.9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.fc .fc-event .fc-event-main {
+  padding: 2px 0;
+  overflow: hidden;
+}
+
+/* Custom event content styling */
+.fc-event-title-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  overflow: hidden;
+}
+
+.fc-event-title-text {
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fc-event-duration-text {
+  font-size: 0.65rem;
+  opacity: 0.85;
+  font-weight: 400;
+}
+
+/* ─── Day grid (month view) ──────────────────────────────── */
+
+.fc .fc-daygrid-day-number {
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  color: var(--foreground);
+}
+
+.fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+  background-color: var(--fc-now-indicator-color);
+  color: white;
+  border-radius: 9999px;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4px;
+  padding: 0;
+}
+
+.fc .fc-daygrid-day-events {
+  margin: 0 2px;
+}
+
+.fc .fc-daygrid-event {
+  border-radius: 4px;
+  font-size: 0.7rem;
+  margin-bottom: 1px;
+}
+
+/* ─── All-day section ────────────────────────────────────── */
+
+.fc .fc-timegrid-divider {
+  padding: 0;
+  border: none;
+}
+
+/* ─── Scrollbar styling ──────────────────────────────────── */
+
+.fc .fc-scroller::-webkit-scrollbar {
+  width: 6px;
+}
+
+.fc .fc-scroller::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.fc .fc-scroller::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 3px;
+}
+
+.dark .fc .fc-scroller::-webkit-scrollbar-thumb {
+  background-color: var(--muted-foreground);
+}

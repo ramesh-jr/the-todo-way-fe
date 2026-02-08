@@ -109,13 +109,7 @@ function formatDateTime(iso: string): string {
   })
 }
 
-function formatDuration(minutes: number): string {
-  const h = Math.floor(minutes / 60)
-  const m = minutes % 60
-  if (h === 0) return `${m}m`
-  if (m === 0) return `${h}h`
-  return `${h}h ${m}m`
-}
+// Duration formatting moved to @/lib/calendarUtils.ts
 
 // Which field is in inline-edit mode
 type EditingField =
