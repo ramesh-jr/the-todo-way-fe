@@ -1,0 +1,82 @@
+[
+  {
+    "id": "item-001", "title": "Reply to the school about the field trip form", "notes": null,
+    "status": "inbox", "kind": "task", "domain_id": null, "priority_id": null, "routine_id": null,
+    "standard_id": null, "energy": null, "context": [], "scheduled_at": null, "duration_minutes": null,
+    "deadline_at": null, "urgency": "normal", "rrule": null, "source": "manual", "external_id": null,
+    "external_calendar_id": null, "someday_reviewed_at": null, "completed_at": null, "labels": [],
+    "reminders": [], "created_at": "2026-05-30T08:30:00Z", "updated_at": "2026-05-30T08:30:00Z"
+  },
+  {
+    "id": "item-002", "title": "Book dentist checkup", "notes": null,
+    "status": "inbox", "kind": "task", "domain_id": null, "priority_id": null, "routine_id": null,
+    "standard_id": null, "energy": null, "context": [], "scheduled_at": null, "duration_minutes": null,
+    "deadline_at": null, "urgency": "normal", "rrule": null, "source": "manual", "external_id": null,
+    "external_calendar_id": null, "someday_reviewed_at": null, "completed_at": null, "labels": [],
+    "reminders": [], "created_at": "2026-05-28T19:05:00Z", "updated_at": "2026-05-28T19:05:00Z"
+  },
+  {
+    "id": "item-003", "title": "Draft Q3 roadmap one-pager", "notes": "Stakeholders want it before the offsite.",
+    "status": "active", "kind": "task", "domain_id": "dom-career", "priority_id": "prio-001", "routine_id": null,
+    "standard_id": null, "energy": "high", "context": ["@focus", "@computer"], "scheduled_at": null,
+    "duration_minutes": 90, "deadline_at": "2026-06-05T17:00:00Z", "urgency": "high", "rrule": null,
+    "source": "manual", "external_id": null, "external_calendar_id": null, "someday_reviewed_at": null,
+    "completed_at": null, "labels": [], "reminders": [], "created_at": "2026-06-01T09:00:00Z", "updated_at": "2026-06-01T09:00:00Z"
+  },
+  {
+    "id": "item-004", "title": "Morning run", "notes": null,
+    "status": "scheduled", "kind": "task", "domain_id": "dom-health", "priority_id": null, "routine_id": "rou-001",
+    "standard_id": "std-h1", "energy": "medium", "context": ["@out"], "scheduled_at": "2026-06-02T07:00:00Z",
+    "duration_minutes": 30, "deadline_at": null, "urgency": "normal", "rrule": null, "source": "manual",
+    "external_id": null, "external_calendar_id": null, "someday_reviewed_at": null, "completed_at": null,
+    "labels": [], "reminders": [], "created_at": "2026-06-01T06:00:00Z", "updated_at": "2026-06-01T06:00:00Z"
+  },
+  {
+    "id": "item-005", "title": "Team standup", "notes": null,
+    "status": "scheduled", "kind": "event", "domain_id": "dom-career", "priority_id": null, "routine_id": null,
+    "standard_id": null, "energy": null, "context": [], "scheduled_at": "2026-06-02T09:30:00Z",
+    "duration_minutes": 30, "deadline_at": null, "urgency": "normal", "rrule": null, "source": "google",
+    "external_id": "gcal-evt-1", "external_calendar_id": "primary", "someday_reviewed_at": null,
+    "completed_at": null, "labels": [], "reminders": [], "created_at": "2026-06-01T06:00:00Z", "updated_at": "2026-06-01T06:00:00Z"
+  },
+  {
+    "id": "item-006", "title": "Pay electricity bill", "notes": null,
+    "status": "scheduled", "kind": "task", "domain_id": "dom-home", "priority_id": null, "routine_id": null,
+    "standard_id": null, "energy": "low", "context": ["@phone"], "scheduled_at": "2026-06-02T18:00:00Z",
+    "duration_minutes": 10, "deadline_at": "2026-06-04T23:59:00Z", "urgency": "normal", "rrule": null,
+    "source": "manual", "external_id": null, "external_calendar_id": null, "someday_reviewed_at": null,
+    "completed_at": null, "labels": [], "reminders": [], "created_at": "2026-06-01T10:00:00Z", "updated_at": "2026-06-01T10:00:00Z"
+  },
+  {
+    "id": "item-007", "title": "Finished weekly review", "notes": null,
+    "status": "done", "kind": "task", "domain_id": "dom-career", "priority_id": null, "routine_id": null,
+    "standard_id": "std-c1", "energy": "low", "context": ["@focus"], "scheduled_at": "2026-05-31T18:00:00Z",
+    "duration_minutes": 20, "deadline_at": null, "urgency": "normal", "rrule": null, "source": "manual",
+    "external_id": null, "external_calendar_id": null, "someday_reviewed_at": null,
+    "completed_at": "2026-05-31T18:25:00Z", "labels": [], "reminders": [], "created_at": "2026-05-31T17:00:00Z", "updated_at": "2026-05-31T18:25:00Z"
+  },
+  {
+    "id": "item-008", "title": "Walk after lunch", "notes": null,
+    "status": "done", "kind": "task", "domain_id": "dom-health", "priority_id": null, "routine_id": "rou-001",
+    "standard_id": "std-h1", "energy": "low", "context": ["@out"], "scheduled_at": "2026-05-30T13:00:00Z",
+    "duration_minutes": 20, "deadline_at": null, "urgency": "normal", "rrule": null, "source": "manual",
+    "external_id": null, "external_calendar_id": null, "someday_reviewed_at": null,
+    "completed_at": "2026-05-30T13:25:00Z", "labels": [], "reminders": [], "created_at": "2026-05-30T12:00:00Z", "updated_at": "2026-05-30T13:25:00Z"
+  },
+  {
+    "id": "item-009", "title": "Learn a watercolor technique", "notes": null,
+    "status": "someday", "kind": "task", "domain_id": "dom-personal", "priority_id": null, "routine_id": null,
+    "standard_id": null, "energy": "medium", "context": ["@home"], "scheduled_at": null, "duration_minutes": null,
+    "deadline_at": null, "urgency": "low", "rrule": null, "source": "manual", "external_id": null,
+    "external_calendar_id": null, "someday_reviewed_at": "2026-04-01T10:00:00Z", "completed_at": null,
+    "labels": [], "reminders": [], "created_at": "2026-03-15T10:00:00Z", "updated_at": "2026-04-01T10:00:00Z"
+  },
+  {
+    "id": "item-010", "title": "Plan a weekend day trip", "notes": null,
+    "status": "active", "kind": "task", "domain_id": "dom-personal", "priority_id": "prio-002", "routine_id": null,
+    "standard_id": null, "energy": "low", "context": ["@computer"], "scheduled_at": null, "duration_minutes": 30,
+    "deadline_at": null, "urgency": "low", "rrule": null, "source": "manual", "external_id": null,
+    "external_calendar_id": null, "someday_reviewed_at": null, "completed_at": null, "labels": [],
+    "reminders": [], "created_at": "2026-06-01T11:00:00Z", "updated_at": "2026-06-01T11:00:00Z"
+  }
+]

@@ -1,294 +1,115 @@
-# The Todo Way - Frontend Low-Level Design
+# The Todo Way - Frontend Low-Level Design (v3)
 
-> **Version**: v1 | **Created**: 2026-02-07 | **Last Updated**: 2026-02-07
-> **Scope**: Frontend-specific implementation details. For full project LLD see docs/lld.md.
+> **Version**: v3 | **Updated**: 2026-06-02
+> **Scope**: Frontend for the Life Command Center. See `docs/plans/v3-life-command-center.md`.
 
 ---
 
 ## 1. Routing
 
 ```
-/                     -> LandingPage (Inbox | Calendar split)
-/inbox                -> InboxPage (full-width inbox)
-/calendar             -> CalendarPage (mini-cal + full calendar)
-/todos                -> TodosPage (sections/subsections view)
-/login                -> LoginPage
+/                 -> TodayPage (default home: priorities + agenda + energy/context filter)
+/inbox            -> InboxPage (clarify surface)
+/calendar         -> CalendarPage (tasks + events; overcommitment warning)
+/domains          -> DomainsPage (conscious-attention dashboard)
+/review           -> ReviewPage (lightweight daily/weekly ritual)
+/settings         -> SettingsPage (calendar connections, export, recovery, data)
+/login            -> LoginPage
 ```
 
-All routes except `/login` wrapped in `AuthGuard` (checks localStorage for auth flag).
+All routes except `/login` are wrapped in `AuthGuard`. A global `CaptureBar` (FAB + `c`
+shortcut + command box) is rendered in `MainLayout`, available on every authed surface.
 
 ---
 
-## 2. Type Definitions (`src/types/`)
+## 2. Types (`src/types/`)
 
-```typescript
-interface Todo {
-  id: string
-  title: string
-  description: string | null
-  scheduled_date: string | null       // ISO 8601
-  deadline_date: string | null
-  duration_minutes: number | null     // 5-480
-  priority: 'p1' | 'p2' | 'p3' | 'p4'
-  location: string | null
-  is_completed: boolean
-  completed_at: string | null
-  section_id: string | null
-  subsection_id: string | null
-  labels: Label[]
-  reminders: Reminder[]
-  created_at: string
-  updated_at: string
-}
+Mirror the canonical model (`domain.ts`, `item.ts`, `review.ts`, ...):
 
-interface Section {
-  id: string
-  name: string
-  sort_order: number
-  subsections: Subsection[]
-}
-
-interface Subsection {
-  id: string
-  name: string
-  sort_order: number
-  section_id: string
-}
-
-interface Label {
-  id: string
-  name: string
-  color: string   // hex
-}
-
-interface Reminder {
-  id: string
-  remind_at: string
-  type: 'before_5min' | 'before_15min' | 'before_30min' | 'before_1hr' | 'custom'
-}
-
-type Priority = 'p1' | 'p2' | 'p3' | 'p4'
-type CalendarView = 'timeGridDay' | 'timeGridThreeDay' | 'timeGridWorkWeek' | 'timeGridWeek' | 'dayGridMonth'
-type SortField = 'scheduled_date' | 'priority' | 'created_at' | 'deadline_date'
-
-interface CreateTodoInput {
-  title: string
-  description?: string | null
-  scheduled_date?: string | null
-  deadline_date?: string | null
-  duration_minutes?: number | null
-  priority?: Priority
-  location?: string | null
-  section_id?: string | null
-  subsection_id?: string | null
-  label_ids?: string[]
-}
-
-type UpdateTodoInput = Partial<CreateTodoInput>
-```
+- `Domain` { id, name, slug, color, icon, sort_order, season, season_note, reflection_only, standards }
+- `Season = 'active' | 'maintenance' | 'paused'`
+- `Standard` { id, domain_id, text, kind, cadence, target, active, sort_order }
+- `StandardKind = 'countable' | 'reflection'`
+- `ReflectionEntry` { id, domain_id, standard_id, rating, note, period_start }
+- `Priority` { id, domain_id, title, horizon, status, period_start, sort_order }
+- `Routine` { id, domain_id, standard_id, title, rrule, default_energy, default_context, default_duration_minutes, active }
+- `Item` { id, title, notes, status, kind, domain_id, priority_id, routine_id, standard_id,
+  energy, context[], scheduled_at, duration_minutes, deadline_at, urgency, rrule, source,
+  external_id, external_calendar_id, someday_reviewed_at, completed_at, labels[], reminders[],
+  created_at, updated_at }
+- `ItemStatus = 'inbox' | 'active' | 'scheduled' | 'done' | 'someday'`
+- `ItemKind = 'task' | 'event'`
+- `Energy = 'low' | 'medium' | 'high'`
+- `Urgency = 'low' | 'normal' | 'high'`
+- `DomainSignal = 'on_track' | 'needs_attention' | 'paused'`
+- Input types: `CaptureInput`, `CreateItemInput`, `ClarifyInput`, `UpdateItemInput`.
 
 ---
 
-## 3. Zustand Stores
+## 3. Stores (Zustand)
 
-### 3.1 todoStore
-
-```typescript
-interface TodoState {
-  todos: Map<string, Todo>
-  isLoading: boolean
-  error: string | null
-  sortBy: SortField
-  sortOrder: 'asc' | 'desc'
-  filters: {
-    sectionId: string | null
-    labelIds: string[]
-    priority: Priority | null
-    showCompleted: boolean  // default false
-  }
-
-  fetchTodos: () => void
-  createTodo: (data: CreateTodoInput) => Todo
-  updateTodo: (id: string, data: Partial<Todo>) => void
-  deleteTodo: (id: string) => void
-  toggleComplete: (id: string) => void
-  scheduleTodo: (id: string, date: Date, durationMinutes?: number) => void
-  setSortBy: (field: SortField) => void
-  setSortOrder: (order: 'asc' | 'desc') => void
-  setFilters: (filters: Partial<TodoState['filters']>) => void
-}
-```
-
-Reads from `dataProvider.todos.list()` on init. Mutations are in-memory (static data phase).
-
-### 3.2 sectionStore
-
-```typescript
-interface SectionState {
-  sections: Section[]
-  labels: Label[]
-  isLoading: boolean
-  fetchSections: () => void
-  fetchLabels: () => void
-  createSection: (name: string) => Section
-  deleteSection: (id: string) => void
-  createSubsection: (sectionId: string, name: string) => void
-  createLabel: (name: string, color: string) => Label
-  deleteLabel: (id: string) => void
-}
-```
-
-### 3.3 uiStore (persisted to localStorage)
-
-```typescript
-interface UIState {
-  sidebarOpen: boolean
-  theme: 'light' | 'dark' | 'system'
-  calendarView: CalendarView
-  todoCardDisplayFields: {
-    showDate: boolean
-    showDeadline: boolean
-    showDuration: boolean
-    showPriority: boolean
-    showLabels: boolean
-    showSection: boolean
-  }
-  selectedTodoId: string | null
-  isCreateDialogOpen: boolean
-  createDialogDefaults: Partial<CreateTodoInput> | null
-
-  toggleSidebar: () => void
-  setTheme: (t: 'light' | 'dark' | 'system') => void
-  setCalendarView: (v: CalendarView) => void
-  openTodoDetail: (id: string) => void
-  closeTodoDetail: () => void
-  openCreateDialog: (defaults?: Partial<CreateTodoInput>) => void
-  closeCreateDialog: () => void
-  toggleCardDisplayField: (field: string) => void
-}
-```
+- `itemStore` (was todoStore): items Map, filters (status/domain/priority/energy/context/
+  maxMinutes), CRUD, `capture`, `clarify`, `complete`, `schedule`, `markSomeday`. Energy/
+  context aware selectors (`getTodayItems`, `getInboxItems`, `getAgendaForDate`,
+  `getItemsForEnergyContext`).
+- `domainStore` (was sectionStore): domains + standards + priorities + reflections;
+  `setSeason`, standard CRUD, `addReflection`, `computeSignals` (countable only, honors
+  seasons + reflection_only), priority CRUD.
+- `reviewStore`: review status, `completeReview`, `deferReview(reason, until)`, re-entry
+  detection after gaps.
+- `uiStore` (persisted): theme, sidebar, calendar view, capture-bar open, energy/context
+  filter, dismissed nudges (with timestamps for rate-limiting), onboarding complete flag.
 
 ---
 
-## 4. Component Hierarchy
+## 4. Surfaces
 
-### TodoCard
-```
-TodoCard (props: { todo: Todo, draggable?: boolean })
-  ├── PriorityIndicator (colored left border: border-l-2)
-  ├── CompleteCheckbox (circle, click -> toggleComplete)
-  ├── TodoTitle (text-sm font-medium, truncated)
-  ├── TodoMeta (conditional on uiStore.todoCardDisplayFields)
-  │    ├── DateBadge (calendar icon + formatted date)
-  │    ├── DeadlineBadge (flag icon + deadline)
-  │    ├── DurationBadge (clock icon + "1h 30m")
-  │    └── LabelTags (colored pills)
-  └── data-event, data-title, data-duration, data-todo-id (when draggable=true)
-```
-
-### CreateTodoDialog
-```
-CreateTodoDialog (shadcn Dialog)
-  ├── TitleInput (required)
-  ├── DescriptionTextarea
-  ├── DateTimePicker (shadcn Calendar + time)
-  ├── DeadlinePicker
-  ├── DurationSelect (15m, 30m, 45m, 1h, 1.5h, 2h, custom)
-  ├── PrioritySelect (P1-P4, colored dots)
-  ├── SectionSelect (from sectionStore)
-  ├── SubsectionSelect (filtered by section)
-  ├── LabelMultiSelect (combobox)
-  ├── LocationInput (text)
-  ├── ReminderSelect
-  └── Save / Cancel buttons
-```
-
-### TodoDetailPopup
-```
-TodoDetailPopup (shadcn Dialog, opened via uiStore.selectedTodoId)
-  ├── All fields from CreateTodoDialog in view/edit mode
-  ├── Inline editing (click to edit)
-  ├── Delete button (with confirmation dialog)
-  └── Close button
-```
-
-### CalendarPage
-```
-CalendarPage
-  ├── MiniCalendar (react-day-picker / shadcn Calendar, left panel)
-  ├── CalendarToolbar (view switcher, today, prev/next)
-  └── FullCalendarWrapper
-       └── <FullCalendar ... />  (see fullcalendar.mdc rule for full config)
-```
-
-### LandingPage
-```
-LandingPage
-  ├── InboxPanel (left ~35%)
-  │    ├── InboxHeader + sort/filter
-  │    ├── TodoCard[] (draggable=true, with FullCalendar Draggable)
-  │    └── + FAB
-  └── CalendarPanel (right ~65%)
-       └── FullCalendarWrapper (droppable=true)
-```
+- **CaptureBar**: title-only quick add; optional NL parse (`parseQuickAdd`); enter -> inbox.
+- **TodayPage**: this week's priorities (top), merged agenda (events + scheduled tasks +
+  due-today + today's routine instances), and an energy/context filter ("I have __ min,
+  feeling __").
+- **InboxPage**: unprocessed captures with **age** chips; per-item clarify (domain, priority,
+  energy/context, schedule, or drop). No guilt counter.
+- **CalendarPage**: FullCalendar engine; tasks vs events styled distinctly; overcommitment
+  warning banner when a day's load exceeds a sane threshold.
+- **DomainsPage**: dashboard ordered (1) focus + wins, (2) intentional choices (seasons),
+  (3) gentle invitations (countable needs-attention, reflection due). Family / reflection-
+  only domains show a trend + "reflect" prompt, never a slipping flag. Season control inline.
+- **ReviewPage**: lightweight, skippable. Triage inbox -> reflect per domain (honor seasons)
+  -> set/confirm priorities. Defer-with-comment supported; gentle re-entry after gaps.
+- **SettingsPage**: calendar connections, export (JSON + markdown), account recovery, data.
 
 ---
 
-## 5. FullCalendar Event Mapping
+## 5. Nudges & grace (`src/lib/nudges.ts`, `src/lib/grace.ts`)
 
-```typescript
-const priorityColors = { p1: '#EF4444', p2: '#F97316', p3: '#3B82F6', p4: '#94A3B8' }
-
-function todoToFCEvent(todo: Todo): EventInput {
-  return {
-    id: todo.id,
-    title: todo.title,
-    start: todo.scheduled_date ?? undefined,
-    end: todo.scheduled_date && todo.duration_minutes
-      ? addMinutes(new Date(todo.scheduled_date), todo.duration_minutes).toISOString()
-      : undefined,
-    allDay: false,
-    backgroundColor: priorityColors[todo.priority],
-    borderColor: priorityColors[todo.priority],
-    extendedProps: { todoId: todo.id, priority: todo.priority }
-  }
-}
-```
+- Nudge engine returns at most one prominent nudge: weekly-review, unclarified-inbox (N items
+  older than threshold), overcommitment (per-day load), someday-decay ("still relevant?").
+  Each dismissible + rate-limited via `uiStore.dismissedNudges`. Paused domains excluded.
+- Grace helpers: routine generation skips missed occurrences; someday decay computation;
+  inbox-age formatting (calm, never "overdue").
 
 ---
 
-## 6. Data Provider (Swap Point)
+## 6. Data provider (swap point)
 
-```typescript
-// src/data/provider.ts -- THE SINGLE SWAP POINT
-import todosData from './todos.json'
-import sectionsData from './sections.json'
-import labelsData from './labels.json'
-
-export const dataProvider = {
-  todos: {
-    list: (): Todo[] => todosData as Todo[],
-    get: (id: string) => (todosData as Todo[]).find(t => t.id === id),
-  },
-  sections: { list: (): Section[] => sectionsData as Section[] },
-  labels: { list: (): Label[] => labelsData as Label[] },
-}
-
-// When BE ready, swap to:
-// export { apiDataProvider as dataProvider } from './apiProvider'
-```
+`src/data/provider.ts` re-exports either the static provider (current) or `apiProvider.ts`
+(axios/fetch against the backend). Stores always go through the provider. The static provider
+serves `src/data/*.json` (domains, standards, priorities, routines, items, reflections) for
+local/offline development.
 
 ---
 
-## 7. Build Conversations (FE-1 through FE-10)
+## 7. Calendar event mapping
 
-- **FE-1**: Vite + React + Tailwind + shadcn/ui + FullCalendar packages + design system tokens + data provider
-- **FE-2**: Type definitions + Zustand stores (todoStore, sectionStore, uiStore)
-- **FE-3**: MainLayout + Sidebar + TopBar + routing
-- **FE-4**: LoginPage
-- **FE-5**: TodoCard + CreateTodoDialog + TodoDetailPopup
-- **FE-6**: InboxPage with filtering/sorting
-- **FE-7**: CalendarPage with FullCalendar
-- **FE-8**: LandingPage with drag-and-drop
-- **FE-9**: TodosPage with sections accordion
-- **FE-10**: Dark/light theme
+`itemToFCEvent(item)`: tasks use urgency-tinted colors and a "task" class; events
+(`kind=event`, external source) use a distinct neutral style and are marked
+`editable: false`. Energy is shown as a small dot. Overcommitment is computed by summing
+durations per day vs `OVERCOMMIT_MINUTES`.
+
+---
+
+## 8. PWA
+
+`manifest.webmanifest`, `public/sw.js` (offline capture queue via IndexedDB + background
+sync), install prompt, and web-push subscription wired to the backend `/push` endpoints.

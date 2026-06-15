@@ -1,0 +1,81 @@
+[
+  {
+    "id": "dom-health",
+    "name": "Health",
+    "slug": "health",
+    "color": "#10B981",
+    "icon": "heart-pulse",
+    "sort_order": 0,
+    "season": "active",
+    "season_note": null,
+    "season_changed_at": null,
+    "reflection_only": false,
+    "standards": [
+      { "id": "std-h1", "domain_id": "dom-health", "text": "Exercise 3x/week", "kind": "countable", "cadence": "weekly", "target": 3, "active": true, "sort_order": 0 },
+      { "id": "std-h2", "domain_id": "dom-health", "text": "Sleep reasonably", "kind": "reflection", "cadence": null, "target": null, "active": true, "sort_order": 1 },
+      { "id": "std-h3", "domain_id": "dom-health", "text": "Don't delay important checkups", "kind": "countable", "cadence": "monthly", "target": 1, "active": true, "sort_order": 2 }
+    ]
+  },
+  {
+    "id": "dom-family",
+    "name": "Family",
+    "slug": "family",
+    "color": "#F59E0B",
+    "icon": "users",
+    "sort_order": 1,
+    "season": "active",
+    "season_note": null,
+    "season_changed_at": null,
+    "reflection_only": true,
+    "standards": [
+      { "id": "std-f1", "domain_id": "dom-family", "text": "How connected did this week feel?", "kind": "reflection", "cadence": null, "target": null, "active": true, "sort_order": 0 }
+    ]
+  },
+  {
+    "id": "dom-career",
+    "name": "Career",
+    "slug": "career",
+    "color": "#6366F1",
+    "icon": "briefcase",
+    "sort_order": 2,
+    "season": "active",
+    "season_note": null,
+    "season_changed_at": null,
+    "reflection_only": false,
+    "standards": [
+      { "id": "std-c1", "domain_id": "dom-career", "text": "Clear weekly priorities set", "kind": "countable", "cadence": "weekly", "target": 1, "active": true, "sort_order": 0 },
+      { "id": "std-c2", "domain_id": "dom-career", "text": "No major stakeholder surprises", "kind": "reflection", "cadence": null, "target": null, "active": true, "sort_order": 1 },
+      { "id": "std-c3", "domain_id": "dom-career", "text": "Some growth action", "kind": "reflection", "cadence": null, "target": null, "active": true, "sort_order": 2 }
+    ]
+  },
+  {
+    "id": "dom-home",
+    "name": "Home",
+    "slug": "home",
+    "color": "#8B5CF6",
+    "icon": "house",
+    "sort_order": 3,
+    "season": "maintenance",
+    "season_note": "Lighter touch while work is busy",
+    "season_changed_at": "2026-05-20T09:00:00Z",
+    "reflection_only": false,
+    "standards": [
+      { "id": "std-ho1", "domain_id": "dom-home", "text": "Stay on top of essentials", "kind": "reflection", "cadence": null, "target": null, "active": true, "sort_order": 0 }
+    ]
+  },
+  {
+    "id": "dom-personal",
+    "name": "Personal",
+    "slug": "personal",
+    "color": "#EC4899",
+    "icon": "sparkles",
+    "sort_order": 4,
+    "season": "active",
+    "season_note": null,
+    "season_changed_at": null,
+    "reflection_only": false,
+    "standards": [
+      { "id": "std-p1", "domain_id": "dom-personal", "text": "Time for something that's just mine", "kind": "reflection", "cadence": null, "target": null, "active": true, "sort_order": 0 }
+    ]
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "prio-001", "domain_id": "dom-career", "title": "Ship the Q3 roadmap draft",
+    "horizon": "week", "status": "active", "period_start": "2026-06-01", "sort_order": 0
+  },
+  {
+    "id": "prio-002", "domain_id": "dom-personal", "title": "Protect one evening for myself",
+    "horizon": "week", "status": "active", "period_start": "2026-06-01", "sort_order": 1
+  },
+  {
+    "id": "prio-003", "domain_id": "dom-health", "title": "Three runs this week",
+    "horizon": "week", "status": "active", "period_start": "2026-06-01", "sort_order": 2
+  }
+]

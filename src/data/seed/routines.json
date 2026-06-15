@@ -1,0 +1,12 @@
+[
+  {
+    "id": "rou-001", "domain_id": "dom-health", "standard_id": "std-h1", "title": "Morning run",
+    "rrule": "FREQ=WEEKLY;BYDAY=MO,WE,FR", "default_energy": "medium", "default_context": ["@out"],
+    "default_duration_minutes": 30, "active": true, "last_generated_date": "2026-06-01"
+  },
+  {
+    "id": "rou-002", "domain_id": "dom-career", "standard_id": "std-c1", "title": "Weekly review",
+    "rrule": "FREQ=WEEKLY;BYDAY=SU", "default_energy": "low", "default_context": ["@focus"],
+    "default_duration_minutes": 20, "active": true, "last_generated_date": "2026-05-31"
+  }
+]

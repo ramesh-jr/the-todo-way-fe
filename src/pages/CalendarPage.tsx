@@ -1,281 +1,206 @@
 // ============================================================
-// CalendarPage — Full calendar view with MiniCalendar sidebar
-// Left panel: MiniCalendar (react-day-picker)
-// Right panel: FullCalendar with 5 views + all event handlers
-// Ref: docs/build-guide.md FE-7
+// CalendarPage — tasks + synced events together. Drag to time-block.
+// Surfaces a gentle overcommitment warning before a day feels impossible.
 // ============================================================
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
-import FullCalendar from "@fullcalendar/react"
 import type { EventClickArg, EventDropArg } from "@fullcalendar/core"
 import dayGridPlugin from "@fullcalendar/daygrid"
 import interactionPlugin from "@fullcalendar/interaction"
-import type { DateClickArg, EventResizeDoneArg } from "@fullcalendar/interaction"
+import type { EventResizeDoneArg } from "@fullcalendar/interaction"
+import FullCalendar from "@fullcalendar/react"
 import timeGridPlugin from "@fullcalendar/timegrid"
-
-import { diffInMinutes, formatDuration, todoToFCEvent } from "@/lib/calendarUtils"
-import { useTodoStore } from "@/stores/todoStore"
-import { useUIStore } from "@/stores/uiStore"
+import { TriangleAlert } from "lucide-react"
 
 import { CalendarToolbar } from "@/components/calendar/CalendarToolbar"
 import { MiniCalendar } from "@/components/calendar/MiniCalendar"
-import { CreateTodoDialog } from "@/components/todo/CreateTodoDialog"
-import { TodoDetailPopup } from "@/components/todo/TodoDetailPopup"
+import { diffInMinutes, itemToFCEvent } from "@/lib/calendarUtils"
+import { CALENDAR_CUSTOM_VIEWS } from "@/lib/calendarViews"
+import { formatShortDate, isoDate } from "@/lib/dates"
+import { OVERCOMMIT_MINUTES, scheduledMinutesByDay } from "@/lib/lifeLogic"
+import { useItemStore } from "@/stores/itemStore"
+import { useUIStore } from "@/stores/uiStore"
 
 import "@/styles/fullcalendar.css"
 
-// ─── Component ──────────────────────────────────────────────
-
 export default function CalendarPage() {
   const calendarRef = useRef<FullCalendar>(null)
-
-  // ─── Stores ─────────────────────────────────────────────
-
-  const todos = useTodoStore((s) => s.todos)
-  const fetchTodos = useTodoStore((s) => s.fetchTodos)
-  const scheduleTodo = useTodoStore((s) => s.scheduleTodo)
-  const updateTodo = useTodoStore((s) => s.updateTodo)
+  const items = useItemStore((s) => s.items)
+  const fetchItems = useItemStore((s) => s.fetchItems)
+  const scheduleItem = useItemStore((s) => s.scheduleItem)
+  const updateItem = useItemStore((s) => s.updateItem)
 
   const calendarView = useUIStore((s) => s.calendarView)
   const setCalendarView = useUIStore((s) => s.setCalendarView)
-  const openTodoDetail = useUIStore((s) => s.openTodoDetail)
-  const openCreateDialog = useUIStore((s) => s.openCreateDialog)
+  const openItemDetail = useUIStore((s) => s.openItemDetail)
+  const openCapture = useUIStore((s) => s.openCapture)
 
-  // ─── Local state ────────────────────────────────────────
-
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date())
-  const [toolbarTitle, setToolbarTitle] = useState("")
-
-  // ─── Fetch todos on mount ───────────────────────────────
+  const [selectedDate, setSelectedDate] = useState(new Date())
+  const [title, setTitle] = useState("")
 
   useEffect(() => {
-    fetchTodos()
-  }, [fetchTodos])
+    void fetchItems()
+  }, [fetchItems])
 
-  // ─── Derive FC events from todos ────────────────────────
+  const events = useMemo(
+    () =>
+      items
+        .filter((i) => i.scheduled_at && i.status !== "done")
+        .map(itemToFCEvent),
+    [items],
+  )
 
-  const events = useMemo(() => {
-    const scheduled: ReturnType<typeof todoToFCEvent>[] = []
-    for (const todo of todos.values()) {
-      if (todo.scheduled_date && !todo.is_completed) {
-        scheduled.push(todoToFCEvent(todo))
-      }
+  // Gentle overcommitment check across the next week (derived, not stored).
+  const overcommittedDay = useMemo<string | null>(() => {
+    const byDay = scheduledMinutesByDay(items)
+    const today = new Date()
+    for (let offset = 0; offset < 7; offset++) {
+      const d = new Date(today)
+      d.setDate(d.getDate() + offset)
+      const key = isoDate(d)
+      if ((byDay.get(key) ?? 0) > OVERCOMMIT_MINUTES) return key
     }
-    return scheduled
-  }, [todos])
-
-  // ─── Sync calendar view with uiStore ────────────────────
-
-  useEffect(() => {
-    const api = calendarRef.current?.getApi()
-    if (api && api.view.type !== calendarView) {
-      api.changeView(calendarView)
-    }
-  }, [calendarView])
-
-  // ─── Toolbar title update ───────────────────────────────
+    return null
+  }, [items])
 
   const updateTitle = useCallback(() => {
     const api = calendarRef.current?.getApi()
-    if (api) {
-      setToolbarTitle(api.view.title)
-    }
+    if (api) setTitle(api.view.title)
   }, [])
 
-  // ─── MiniCalendar → navigate FullCalendar ───────────────
-
-  const handleMiniCalendarSelect = useCallback(
+  const handleMiniSelect = useCallback(
     (date: Date) => {
       setSelectedDate(date)
       const api = calendarRef.current?.getApi()
-      if (api) {
-        api.gotoDate(date)
-        updateTitle()
-      }
+      api?.gotoDate(date)
+      updateTitle()
     },
     [updateTitle],
   )
 
-  // ─── Toolbar navigation ─────────────────────────────────
-
   const handleToday = useCallback(() => {
     const api = calendarRef.current?.getApi()
-    if (api) {
-      api.today()
-      setSelectedDate(new Date())
-      updateTitle()
-    }
+    api?.today()
+    setSelectedDate(new Date())
+    updateTitle()
   }, [updateTitle])
 
   const handlePrev = useCallback(() => {
     const api = calendarRef.current?.getApi()
-    if (api) {
-      api.prev()
-      setSelectedDate(api.getDate())
-      updateTitle()
-    }
+    api?.prev()
+    if (api) setSelectedDate(api.getDate())
+    updateTitle()
   }, [updateTitle])
 
   const handleNext = useCallback(() => {
     const api = calendarRef.current?.getApi()
-    if (api) {
-      api.next()
-      setSelectedDate(api.getDate())
-      updateTitle()
-    }
+    api?.next()
+    if (api) setSelectedDate(api.getDate())
+    updateTitle()
   }, [updateTitle])
 
-  // ─── FullCalendar event handlers ────────────────────────
-
-  /** Click on an event → open TodoDetailPopup */
   const handleEventClick = useCallback(
     (info: EventClickArg) => {
-      const todoId = info.event.extendedProps.todoId as string
-      if (todoId) {
-        openTodoDetail(todoId)
-      }
+      const id = info.event.extendedProps.itemId as string | undefined
+      if (id) openItemDetail(id)
     },
-    [openTodoDetail],
+    [openItemDetail],
   )
 
-  /** Click on an empty date/time → open CreateTodoDialog with date pre-filled */
-  const handleDateClick = useCallback(
-    (info: DateClickArg) => {
-      openCreateDialog({
-        scheduled_date: info.dateStr,
-      })
-    },
-    [openCreateDialog],
-  )
-
-  /** Drag an event to a new time → reschedule */
   const handleEventDrop = useCallback(
     (info: EventDropArg) => {
-      const todoId = info.event.extendedProps.todoId as string
-      if (todoId && info.event.start) {
-        scheduleTodo(todoId, info.event.start)
+      const id = info.event.extendedProps.itemId as string | undefined
+      if (id && info.event.start) {
+        const duration =
+          info.event.end && info.event.start
+            ? diffInMinutes(info.event.start, info.event.end)
+            : 30
+        void scheduleItem(id, info.event.start.toISOString(), duration)
       }
     },
-    [scheduleTodo],
+    [scheduleItem],
   )
 
-  /** Resize an event → update duration */
   const handleEventResize = useCallback(
     (info: EventResizeDoneArg) => {
-      const todoId = info.event.extendedProps.todoId as string
-      if (todoId && info.event.start && info.event.end) {
-        const newDuration = diffInMinutes(info.event.start, info.event.end)
-        updateTodo(todoId, { duration_minutes: newDuration })
+      const id = info.event.extendedProps.itemId as string | undefined
+      if (id && info.event.start && info.event.end) {
+        void updateItem(id, {
+          duration_minutes: diffInMinutes(info.event.start, info.event.end),
+        })
       }
     },
-    [updateTodo],
+    [updateItem],
   )
 
-  /** Called whenever FC's dates/view changes */
+  const handleDateClick = useCallback(() => {
+    openCapture()
+  }, [openCapture])
+
   const handleDatesSet = useCallback(() => {
     const api = calendarRef.current?.getApi()
     if (api) {
-      setToolbarTitle(api.view.title)
-      // Keep uiStore in sync if the view changed (e.g. via FC internal nav)
-      const currentView = api.view.type
-      if (currentView !== calendarView) {
-        setCalendarView(currentView as typeof calendarView)
+      setTitle(api.view.title)
+      if (api.view.type !== calendarView) {
+        setCalendarView(api.view.type as typeof calendarView)
       }
     }
   }, [calendarView, setCalendarView])
 
-  // ─── Custom event content renderer ──────────────────────
-
-  const renderEventContent = useCallback(
-    (eventInfo: { event: { title: string; extendedProps: Record<string, unknown> }; timeText: string }) => {
-      const durationMinutes = eventInfo.event.extendedProps.durationMinutes as
-        | number
-        | null
-      return (
-        <div className="fc-event-title-container">
-          <span className="fc-event-title-text">{eventInfo.event.title}</span>
-          {durationMinutes && (
-            <span className="fc-event-duration-text">
-              {formatDuration(durationMinutes)}
-            </span>
-          )}
-        </div>
-      )
-    },
-    [],
-  )
-
-  // ─── Render ─────────────────────────────────────────────
-
   return (
     <div className="flex h-full flex-col">
-      {/* Toolbar */}
       <CalendarToolbar
-        title={toolbarTitle}
+        title={title}
         onToday={handleToday}
         onPrev={handlePrev}
         onNext={handleNext}
       />
 
-      {/* Body: MiniCalendar + FullCalendar */}
+      {overcommittedDay && (
+        <div className="flex items-center gap-2 border-b border-amber-500/20 bg-amber-500/10 px-4 py-2 text-sm">
+          <TriangleAlert className="size-4 text-amber-600" />
+          <span className="text-foreground">
+            {formatShortDate(`${overcommittedDay}T12:00:00`)} looks full — want to move
+            something so the day feels doable?
+          </span>
+        </div>
+      )}
+
       <div className="flex flex-1 overflow-hidden">
-        {/* Left panel: MiniCalendar */}
         <aside className="hidden w-64 shrink-0 border-r border-border p-4 lg:block">
-          <MiniCalendar
-            selectedDate={selectedDate}
-            onDateSelect={handleMiniCalendarSelect}
-          />
+          <MiniCalendar selectedDate={selectedDate} onDateSelect={handleMiniSelect} />
+          <p className="mt-4 text-xs text-muted-foreground">
+            Dashed events are commitments synced from your calendars. Solid blocks are your
+            tasks — drag them to make time.
+          </p>
         </aside>
 
-        {/* Right panel: FullCalendar */}
         <div className="flex-1 overflow-auto p-2">
           <FullCalendar
             ref={calendarRef}
             plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
             initialView={calendarView}
             headerToolbar={false}
-            views={{
-              timeGridWorkWeek: {
-                type: "timeGrid",
-                duration: { weeks: 1 },
-                weekends: false,
-              },
-              timeGridThreeDay: {
-                type: "timeGrid",
-                duration: { days: 3 },
-              },
-            }}
-            // Time settings
+            views={CALENDAR_CUSTOM_VIEWS}
             slotMinTime="06:00:00"
             slotMaxTime="24:00:00"
             slotDuration="00:15:00"
-            // Features
             nowIndicator
             editable
-            selectable
             eventResizableFromStart
-            // Events
             events={events}
-            eventContent={renderEventContent}
-            // Callbacks
             eventClick={handleEventClick}
-            dateClick={handleDateClick}
             eventDrop={handleEventDrop}
             eventResize={handleEventResize}
+            dateClick={handleDateClick}
             datesSet={handleDatesSet}
-            // Sizing
             height="100%"
             stickyHeaderDates
-            // Day grid (month) settings
             dayMaxEvents={4}
           />
         </div>
       </div>
-
-      {/* Dialogs */}
-      <CreateTodoDialog />
-      <TodoDetailPopup />
     </div>
   )
 }

@@ -1,0 +1,5 @@
+[
+  { "id": "ref-001", "domain_id": "dom-family", "standard_id": "std-f1", "rating": 4, "note": "Good weekend together, felt present.", "period_start": "2026-05-18", "created_at": "2026-05-24T20:00:00Z" },
+  { "id": "ref-002", "domain_id": "dom-family", "standard_id": "std-f1", "rating": 3, "note": "Busy week, less time than I wanted.", "period_start": "2026-05-25", "created_at": "2026-05-31T20:00:00Z" },
+  { "id": "ref-003", "domain_id": "dom-career", "standard_id": "std-c3", "rating": 3, "note": "Read one article, no deep learning.", "period_start": "2026-05-25", "created_at": "2026-05-31T20:05:00Z" }
+]

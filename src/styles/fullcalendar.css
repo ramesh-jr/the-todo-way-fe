@@ -131,6 +131,17 @@
   font-weight: 400;
 }
 
+/* ─── Tasks vs events ────────────────────────────────────── */
+/* Events are commitments done to me: render with a subtle dashed border so they
+   read differently from movable tasks. */
+.fc .fc-event.fc-item-event {
+  border: 1px dashed rgba(255, 255, 255, 0.55);
+}
+
+.fc .fc-event.fc-item-task {
+  border: none;
+}
+
 /* ─── Day grid (month view) ──────────────────────────────── */
 
 .fc .fc-daygrid-day-number {

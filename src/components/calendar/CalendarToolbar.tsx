@@ -11,8 +11,8 @@ import {
 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import type { CalendarView } from "@/lib/calendarViews"
 import { useUIStore } from "@/stores/uiStore"
-import type { CalendarView } from "@/types/todo"
 
 import { Button } from "@/components/ui/button"
 
