@@ -85,11 +85,15 @@ export function CaptureBar() {
               Detected: {preview.hints.join(" · ")}
             </p>
           )}
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-xs text-muted-foreground">
-              Goes to your Inbox — clarify it later.
+              {preview?.input.scheduled_at
+                ? "Scheduled on your calendar (skips Inbox)."
+                : preview && preview.hints.length > 0
+                  ? "Captured with hints — lands ready to engage."
+                  : "Goes to your Inbox — clarify it later."}
             </p>
-            <Button type="submit" disabled={!text.trim()}>
+            <Button type="submit" disabled={!text.trim()} className="w-full sm:w-auto">
               Capture
             </Button>
           </div>

@@ -71,22 +71,22 @@ export function DomainCard({ card }: DomainCardProps) {
 
   return (
     <>
-      <Card>
-        <CardHeader>
-          <div className="flex items-start justify-between gap-3">
-            <CardTitle className="flex items-center gap-2 text-base">
+      <Card className="min-w-0 gap-4 overflow-hidden py-4 sm:gap-6 sm:py-6">
+        <CardHeader className="px-4 sm:px-6">
+          <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
+            <CardTitle className="flex min-w-0 items-center gap-2 text-base">
               <span
                 aria-hidden
-                className="inline-block size-3 rounded-full"
+                className="inline-block size-3 shrink-0 rounded-full"
                 style={{ backgroundColor: domain.color }}
               />
-              <span>{domain.name}</span>
+              <span className="truncate">{domain.name}</span>
             </CardTitle>
             <SeasonControl domainId={domain.id} season={domain.season} />
           </div>
         </CardHeader>
 
-        <CardContent className="space-y-5">
+        <CardContent className="space-y-5 px-4 sm:px-6">
           {recent_wins > 0 && (
             <p className="text-muted-foreground text-sm">
               {recent_wins} done this week — nicely paced.
@@ -96,17 +96,20 @@ export function DomainCard({ card }: DomainCardProps) {
           {showReflectionSection && (
             <div className="space-y-3">
               <TrendSparkline points={trend} />
-              <ul className="space-y-2">
+              <ul className="space-y-3">
                 {reflectionStandards.length > 0
                   ? reflectionStandards.map((standard) => (
                       <li
                         key={standard.id}
-                        className="flex items-center justify-between gap-3 text-sm"
+                        className="flex min-w-0 flex-col gap-1.5 text-sm sm:flex-row sm:items-center sm:justify-between sm:gap-3"
                       >
-                        <span className="text-foreground">{standard.text}</span>
+                        <span className="text-foreground min-w-0 break-words">
+                          {standard.text}
+                        </span>
                         <Button
                           variant="ghost"
                           size="xs"
+                          className="self-start shrink-0"
                           onClick={() => openReflectionFor(standard.id)}
                         >
                           Reflect
@@ -114,13 +117,14 @@ export function DomainCard({ card }: DomainCardProps) {
                       </li>
                     ))
                   : (
-                      <li className="flex items-center justify-between gap-3 text-sm">
-                        <span className="text-muted-foreground">
+                      <li className="flex min-w-0 flex-col gap-1.5 text-sm sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+                        <span className="text-muted-foreground min-w-0 break-words">
                           How is this season feeling?
                         </span>
                         <Button
                           variant="ghost"
                           size="xs"
+                          className="self-start shrink-0"
                           onClick={() => openReflectionFor(null)}
                         >
                           Reflect
@@ -132,14 +136,14 @@ export function DomainCard({ card }: DomainCardProps) {
           )}
 
           {showCountableSection && (
-            <ul className="space-y-2">
+            <ul className="space-y-3">
               {countableSignals.map((sig) => (
                 <li
                   key={sig.standard_id}
-                  className="flex items-start justify-between gap-3 text-sm"
+                  className="flex min-w-0 flex-col gap-1.5 text-sm sm:flex-row sm:items-start sm:justify-between sm:gap-3"
                 >
                   <div className="min-w-0 flex-1">
-                    <p className="truncate">{sig.text}</p>
+                    <p className="break-words">{sig.text}</p>
                     {sig.target !== null && sig.cadence && (
                       <p className="text-muted-foreground text-xs">
                         {sig.recent_count}/{sig.target} this {sig.cadence
@@ -156,13 +160,14 @@ export function DomainCard({ card }: DomainCardProps) {
           )}
 
           {needs_reflection && (
-            <div className="flex items-center justify-between gap-3 rounded-md border border-dashed px-3 py-2">
-              <p className="text-muted-foreground text-sm">
+            <div className="flex min-w-0 flex-col gap-2 rounded-md border border-dashed px-3 py-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+              <p className="text-muted-foreground min-w-0 text-sm break-words">
                 A reflection is waiting when you have a moment.
               </p>
               <Button
                 variant="outline"
                 size="sm"
+                className="self-start shrink-0"
                 onClick={() => openReflectionFor(null)}
               >
                 Reflect

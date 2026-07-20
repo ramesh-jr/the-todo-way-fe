@@ -42,6 +42,7 @@ src/
 
 ## Documentation
 
+- [AI / handoff context (decisions, pending, what to test)](docs/ai-context.md)
 - [Architecture](docs/architecture.md)
 - [Frontend LLD](docs/lld-frontend.md)
 - [Design system](docs/design-system.md)

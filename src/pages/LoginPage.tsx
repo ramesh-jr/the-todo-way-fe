@@ -34,7 +34,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
 
   function enterDemo() {
-    setToken("demo")
+    setToken("demo") // offline-only placeholder; rejected when VITE_API_URL is set
     navigate("/", { replace: true })
   }
 
@@ -70,7 +70,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="grid min-h-screen place-items-center bg-background p-4">
+    <div className="grid min-h-dvh place-items-center bg-background p-4">
       <Card className="w-full max-w-sm shadow-lg">
         <CardHeader className="items-center text-center">
           <div className="flex size-12 items-center justify-center rounded-full bg-primary/10">

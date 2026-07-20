@@ -31,7 +31,7 @@ export function SeasonControl({ domainId, season }: SeasonControlProps) {
     >
       <SelectTrigger
         size="sm"
-        className="h-7! gap-1 px-2! text-xs"
+        className="h-7! w-auto max-w-full shrink-0 gap-1 self-start px-2! text-xs"
         aria-label="Season"
       >
         <SelectValue>{SEASON_LABELS[season]}</SelectValue>

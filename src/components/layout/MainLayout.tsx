@@ -5,6 +5,7 @@ import { Plus } from "lucide-react"
 import { CaptureBar } from "@/components/capture/CaptureBar"
 import { ClarifyDialog } from "@/components/items/ClarifyDialog"
 import { ItemDetailDialog } from "@/components/items/ItemDetailDialog"
+import MobileNav from "@/components/layout/MobileNav"
 import { NudgeBanner } from "@/components/nudges/NudgeBanner"
 import Sidebar from "@/components/layout/Sidebar"
 import TopBar from "@/components/layout/TopBar"
@@ -27,27 +28,29 @@ export default function MainLayout() {
   }, [fetchItems, fetchDomains, fetchPriorities])
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background text-foreground">
+    <div className="flex h-dvh overflow-hidden bg-background text-foreground">
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <TopBar />
-        <main className="flex-1 overflow-auto">
-          <div className="px-4 pt-4">
+        <main className="flex-1 overflow-auto pb-[calc(3.5rem+env(safe-area-inset-bottom))] md:pb-0">
+          <div className="px-3 pt-3 sm:px-4 sm:pt-4">
             <NudgeBanner />
           </div>
           <Outlet />
         </main>
       </div>
 
+      <MobileNav />
+
       {/* Global capture + dialogs, available on every surface */}
       <CaptureBar />
       <ClarifyDialog />
       <ItemDetailDialog />
 
-      {/* Global capture FAB */}
+      {/* Capture FAB — sits above the mobile tab bar; freer on desktop */}
       <Button
         size="icon"
-        className="fixed bottom-6 right-6 size-14 rounded-full shadow-lg"
+        className="fixed right-[max(1rem,env(safe-area-inset-right))] bottom-[calc(4.25rem+env(safe-area-inset-bottom))] z-30 size-12 rounded-full shadow-lg sm:size-14 md:right-6 md:bottom-6"
         onClick={openCapture}
         aria-label="Capture"
       >

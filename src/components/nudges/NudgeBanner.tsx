@@ -37,23 +37,32 @@ export function NudgeBanner() {
   return (
     <div
       className={cn(
-        "mx-auto mb-4 flex max-w-3xl items-center gap-3 rounded-lg border border-primary/20 bg-primary/5 px-4 py-3",
+        "mx-auto mb-4 flex max-w-3xl items-start gap-2 rounded-lg border border-primary/20 bg-primary/5 px-3 py-3 sm:items-center sm:gap-3 sm:px-4",
       )}
     >
       <div className="min-w-0 flex-1">
         <p className="text-sm font-medium">{primary.title}</p>
         <p className="text-xs text-muted-foreground">{primary.message}</p>
+        <Button
+          size="sm"
+          variant="outline"
+          className="mt-2 sm:hidden"
+          onClick={() => navigate(NUDGE_TARGET[primary.kind])}
+        >
+          Take a look
+        </Button>
       </div>
       <Button
         size="sm"
         variant="outline"
+        className="hidden shrink-0 sm:inline-flex"
         onClick={() => navigate(NUDGE_TARGET[primary.kind])}
       >
         Take a look
       </Button>
       <button
         type="button"
-        className="rounded-full p-1 text-muted-foreground hover:bg-accent"
+        className="shrink-0 rounded-full p-1 text-muted-foreground hover:bg-accent"
         onClick={() => dismissNudge(primary.kind)}
         aria-label="Dismiss"
       >

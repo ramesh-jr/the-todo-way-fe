@@ -47,6 +47,7 @@ Personal Life Command Center: capture → clarify → engage → review. Surface
 
 ## Reference Docs
 
+- **`docs/ai-context.md`** — start here for any new session (decisions, pending, test checklist); keep in sync with BE copy
 - `docs/lld-frontend.md`, `docs/architecture.md`, `docs/design-system.md`
 - `docs/plans/v3-life-command-center.md`
 - Backend ops: `the-todo-way-be/docs/ops-pending.md`

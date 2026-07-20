@@ -15,6 +15,7 @@ import { TriangleAlert } from "lucide-react"
 
 import { CalendarToolbar } from "@/components/calendar/CalendarToolbar"
 import { MiniCalendar } from "@/components/calendar/MiniCalendar"
+import { useIsDesktop } from "@/hooks/useMediaQuery"
 import { diffInMinutes, itemToFCEvent } from "@/lib/calendarUtils"
 import { CALENDAR_CUSTOM_VIEWS } from "@/lib/calendarViews"
 import { formatShortDate, isoDate } from "@/lib/dates"
@@ -35,6 +36,7 @@ export default function CalendarPage() {
   const setCalendarView = useUIStore((s) => s.setCalendarView)
   const openItemDetail = useUIStore((s) => s.openItemDetail)
   const openCapture = useUIStore((s) => s.openCapture)
+  const isDesktop = useIsDesktop()
 
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [title, setTitle] = useState("")
@@ -42,6 +44,22 @@ export default function CalendarPage() {
   useEffect(() => {
     void fetchItems()
   }, [fetchItems])
+
+  // On first phone visit, land on Day (week grids are too dense). User can still switch.
+  useEffect(() => {
+    if (!isDesktop && (calendarView === "timeGridWeek" || calendarView === "timeGridWorkWeek")) {
+      setCalendarView("timeGridDay")
+    }
+    // Intentionally once on mount / when crossing the breakpoint — not on every view change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDesktop])
+
+  useEffect(() => {
+    const api = calendarRef.current?.getApi()
+    if (api && api.view.type !== calendarView) {
+      api.changeView(calendarView)
+    }
+  }, [calendarView])
 
   const events = useMemo(
     () =>
@@ -158,8 +176,8 @@ export default function CalendarPage() {
       />
 
       {overcommittedDay && (
-        <div className="flex items-center gap-2 border-b border-amber-500/20 bg-amber-500/10 px-4 py-2 text-sm">
-          <TriangleAlert className="size-4 text-amber-600" />
+        <div className="flex items-start gap-2 border-b border-amber-500/20 bg-amber-500/10 px-3 py-2 text-sm sm:items-center sm:px-4">
+          <TriangleAlert className="mt-0.5 size-4 shrink-0 text-amber-600 sm:mt-0" />
           <span className="text-foreground">
             {formatShortDate(`${overcommittedDay}T12:00:00`)} looks full — want to move
             something so the day feels doable?
@@ -167,7 +185,7 @@ export default function CalendarPage() {
         </div>
       )}
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex min-h-0 flex-1 overflow-hidden">
         <aside className="hidden w-64 shrink-0 border-r border-border p-4 lg:block">
           <MiniCalendar selectedDate={selectedDate} onDateSelect={handleMiniSelect} />
           <p className="mt-4 text-xs text-muted-foreground">
@@ -176,11 +194,11 @@ export default function CalendarPage() {
           </p>
         </aside>
 
-        <div className="flex-1 overflow-auto p-2">
+        <div className="min-h-0 flex-1 overflow-auto p-1 sm:p-2">
           <FullCalendar
             ref={calendarRef}
             plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
-            initialView={calendarView}
+            initialView={isDesktop ? calendarView : "timeGridDay"}
             headerToolbar={false}
             views={CALENDAR_CUSTOM_VIEWS}
             slotMinTime="06:00:00"
@@ -197,7 +215,8 @@ export default function CalendarPage() {
             datesSet={handleDatesSet}
             height="100%"
             stickyHeaderDates
-            dayMaxEvents={4}
+            dayMaxEvents={isDesktop ? 4 : 2}
+            longPressDelay={250}
           />
         </div>
       </div>

@@ -7,7 +7,7 @@ import { useEffect, useMemo } from "react"
 
 import { EnergyContextFilter } from "@/components/today/EnergyContextFilter"
 import { ItemCard } from "@/components/items/ItemCard"
-import { isToday } from "@/lib/dates"
+import { isToday, isUpcoming } from "@/lib/dates"
 import { fitsEnergyContext } from "@/lib/lifeLogic"
 import { useDomainStore } from "@/stores/domainStore"
 import { useItemStore } from "@/stores/itemStore"
@@ -55,6 +55,21 @@ export default function TodayPage() {
     [items],
   )
 
+  // NL capture like "Sambavam tomorrow" lands as scheduled (skips Inbox).
+  // Surface those here so home isn't empty until that calendar day arrives.
+  const comingUp = useMemo(
+    () =>
+      items
+        .filter(
+          (i) =>
+            i.status !== "done" &&
+            i.kind === "task" &&
+            isUpcoming(i.scheduled_at, 7),
+        )
+        .sort((a, b) => (a.scheduled_at ?? "").localeCompare(b.scheduled_at ?? "")),
+    [items],
+  )
+
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",
@@ -62,9 +77,9 @@ export default function TodayPage() {
   })
 
   return (
-    <div className="mx-auto w-full max-w-3xl space-y-8 p-6">
+    <div className="mx-auto w-full max-w-3xl space-y-6 p-4 pb-8 sm:space-y-8 sm:p-6">
       <header>
-        <h1 className="text-2xl font-bold">Today</h1>
+        <h1 className="text-xl font-bold sm:text-2xl">Today</h1>
         <p className="text-sm text-muted-foreground">{today}</p>
       </header>
 
@@ -119,6 +134,17 @@ export default function TodayPage() {
           )}
         </div>
       </section>
+
+      {comingUp.length > 0 && (
+        <section>
+          <SectionLabel>Coming up</SectionLabel>
+          <div className="space-y-2">
+            {comingUp.map((item) => (
+              <ItemCard key={item.id} item={item} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   )
 }

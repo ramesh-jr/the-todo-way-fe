@@ -29,15 +29,15 @@ export default function InboxPage() {
   )
 
   return (
-    <div className="mx-auto w-full max-w-2xl space-y-4 p-6">
-      <header className="flex items-center gap-3">
-        <Inbox className="size-5 text-primary" />
-        <h1 className="text-xl font-semibold">Inbox</h1>
+    <div className="mx-auto w-full max-w-2xl space-y-4 p-4 pb-8 sm:p-6">
+      <header className="flex flex-wrap items-center gap-x-3 gap-y-2">
+        <Inbox className="size-5 shrink-0 text-primary" />
+        <h1 className="text-lg font-semibold sm:text-xl">Inbox</h1>
         <span className="text-sm text-muted-foreground">
           {inboxItems.length} waiting
         </span>
         <div className="flex-1" />
-        <Button size="sm" onClick={openCapture}>
+        <Button size="sm" onClick={openCapture} className="hidden sm:inline-flex">
           <Plus className="size-4" />
           Capture
         </Button>

@@ -27,6 +27,19 @@ export function isToday(iso: string | null): boolean {
   return isSameDay(new Date(iso), new Date())
 }
 
+/** True when `iso` falls on a calendar day after today, within `withinDays` (default 7). */
+export function isUpcoming(iso: string | null, withinDays = 7): boolean {
+  if (!iso) return false
+  const when = new Date(iso)
+  const start = new Date()
+  start.setHours(0, 0, 0, 0)
+  const tomorrow = new Date(start)
+  tomorrow.setDate(tomorrow.getDate() + 1)
+  const end = new Date(start)
+  end.setDate(end.getDate() + withinDays + 1) // exclusive upper bound
+  return when >= tomorrow && when < end
+}
+
 /** Calm relative age, e.g. "today", "2 days", "3 weeks". Never "overdue". */
 export function formatAge(iso: string): string {
   const then = new Date(iso).getTime()

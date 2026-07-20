@@ -34,8 +34,10 @@ export function EnergyContextFilter() {
     energyFilter.maxMinutes !== null
 
   return (
-    <div className="flex flex-wrap items-center gap-x-5 gap-y-3 rounded-lg border border-border bg-card/50 px-4 py-3">
-      <span className="text-sm text-muted-foreground">What fits right now?</span>
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-2.5 rounded-lg border border-border bg-card/50 px-3 py-3 sm:gap-x-5 sm:gap-y-3 sm:px-4">
+      <span className="w-full text-sm text-muted-foreground sm:w-auto">
+        What fits right now?
+      </span>
 
       <div className="flex items-center gap-2">
         <EnergySelect

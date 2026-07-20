@@ -3,7 +3,7 @@
 // Implements the same DataProvider contract as the static provider.
 // ============================================================
 
-import { getToken } from "@/lib/auth"
+import { getToken, logoutToLogin } from "@/lib/auth"
 import type {
   CalendarConnection,
   CaptureInput,
@@ -58,6 +58,10 @@ export function createApiProvider(baseUrl: string): DataProvider {
       body: body !== undefined ? JSON.stringify(body) : undefined,
     })
     if (!resp.ok) {
+      if (resp.status === 401) {
+        logoutToLogin()
+        throw new Error("Session expired — please log in again")
+      }
       let message = `Request failed (${resp.status})`
       try {
         const payload = (await resp.json()) as ApiEnvelope<unknown>

@@ -33,6 +33,7 @@ interface UIState {
 
   setTheme: (theme: Theme) => void
   toggleSidebar: () => void
+  setSidebarOpen: (open: boolean) => void
   setCalendarView: (view: CalendarView) => void
   setEnergyFilter: (patch: Partial<EnergyContextFilter>) => void
   resetEnergyFilter: () => void
@@ -78,6 +79,7 @@ export const useUIStore = create<UIState>()(
         set({ theme })
       },
       toggleSidebar: () => set((s) => ({ sidebarOpen: !s.sidebarOpen })),
+      setSidebarOpen: (open) => set({ sidebarOpen: open }),
       setCalendarView: (calendarView) => set({ calendarView }),
       setEnergyFilter: (patch) =>
         set((s) => ({ energyFilter: { ...s.energyFilter, ...patch } })),

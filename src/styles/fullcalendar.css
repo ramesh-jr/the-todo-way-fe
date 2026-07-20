@@ -198,3 +198,30 @@
 .dark .fc .fc-scroller::-webkit-scrollbar-thumb {
   background-color: var(--muted-foreground);
 }
+
+/* ─── Mobile densification ──────────────────────────────── */
+
+@media (max-width: 767px) {
+  .fc .fc-timegrid-slot {
+    height: 2rem;
+  }
+
+  .fc .fc-col-header-cell-cushion {
+    padding: 4px 2px;
+    font-size: 0.65rem;
+  }
+
+  .fc .fc-timegrid-slot-label-cushion {
+    font-size: 0.65rem;
+    padding: 0 4px;
+  }
+
+  .fc .fc-event {
+    padding: 1px 4px;
+    font-size: 0.7rem;
+  }
+
+  .fc-event-title-text {
+    font-size: 0.7rem;
+  }
+}

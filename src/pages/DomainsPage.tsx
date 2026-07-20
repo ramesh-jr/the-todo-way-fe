@@ -50,7 +50,7 @@ export default function DomainsPage() {
 
   if (!dashboard) {
     return (
-      <div className="mx-auto max-w-5xl p-6">
+      <div className="mx-auto max-w-5xl p-4 sm:p-6">
         <p className="text-muted-foreground text-sm">Loading…</p>
       </div>
     )
@@ -60,19 +60,19 @@ export default function DomainsPage() {
     maintenanceDomains.length > 0 || pausedDomains.length > 0
 
   return (
-    <div className="mx-auto max-w-5xl space-y-8 p-6">
+    <div className="mx-auto w-full min-w-0 max-w-5xl space-y-6 overflow-x-hidden p-4 pb-8 sm:space-y-8 sm:p-6">
       <header className="space-y-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Domains</h1>
+        <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">Domains</h1>
         <p className="text-muted-foreground text-sm">
           A calm read on your life — not a scorecard.
         </p>
       </header>
 
-      <section className="space-y-3">
+      <section className="min-w-0 space-y-3">
         <h2 className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
           What you chose to focus on
         </h2>
-        <p className="text-base">
+        <p className="text-base break-words">
           {dashboard.recent_wins > 0
             ? `${dashboard.recent_wins} ${
                 dashboard.recent_wins === 1 ? "win" : "wins"
@@ -88,16 +88,16 @@ export default function DomainsPage() {
               return (
                 <li
                   key={priority.id}
-                  className="flex items-center gap-2 text-sm"
+                  className="flex min-w-0 items-start gap-2 text-sm"
                 >
                   {dom && (
                     <span
                       aria-hidden
-                      className="inline-block size-2.5 rounded-full"
+                      className="mt-1.5 inline-block size-2.5 shrink-0 rounded-full"
                       style={{ backgroundColor: dom.color }}
                     />
                   )}
-                  <span>{priority.title}</span>
+                  <span className="min-w-0 break-words">{priority.title}</span>
                 </li>
               )
             })}
@@ -110,34 +110,40 @@ export default function DomainsPage() {
       </section>
 
       {hasIntentional && (
-        <section className="space-y-3">
+        <section className="min-w-0 space-y-3">
           <h2 className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
             Intentional choices
           </h2>
           <ul className="space-y-2 text-sm">
             {maintenanceDomains.map((d) => (
-              <li key={d.id} className="flex items-center gap-2">
+              <li key={d.id} className="flex min-w-0 items-start gap-2">
                 <span
                   aria-hidden
-                  className="inline-block size-2.5 rounded-full"
+                  className="mt-1.5 inline-block size-2.5 shrink-0 rounded-full"
                   style={{ backgroundColor: d.color }}
                 />
-                <span className="font-medium">{d.name}</span>
-                <span className="text-muted-foreground">
-                  — on maintenance, a conscious choice.
+                <span className="min-w-0 break-words">
+                  <span className="font-medium">{d.name}</span>
+                  <span className="text-muted-foreground">
+                    {" "}
+                    — on maintenance, a conscious choice.
+                  </span>
                 </span>
               </li>
             ))}
             {pausedDomains.map((d) => (
-              <li key={d.id} className="flex items-center gap-2">
+              <li key={d.id} className="flex min-w-0 items-start gap-2">
                 <span
                   aria-hidden
-                  className="inline-block size-2.5 rounded-full"
+                  className="mt-1.5 inline-block size-2.5 shrink-0 rounded-full"
                   style={{ backgroundColor: d.color }}
                 />
-                <span className="font-medium">{d.name}</span>
-                <span className="text-muted-foreground">
-                  — paused, a conscious choice.
+                <span className="min-w-0 break-words">
+                  <span className="font-medium">{d.name}</span>
+                  <span className="text-muted-foreground">
+                    {" "}
+                    — paused, a conscious choice.
+                  </span>
                 </span>
               </li>
             ))}
@@ -145,7 +151,7 @@ export default function DomainsPage() {
         </section>
       )}
 
-      <section className="space-y-3">
+      <section className="min-w-0 space-y-3">
         <h2 className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
           Your domains
         </h2>
@@ -154,9 +160,11 @@ export default function DomainsPage() {
             Add a domain when you're ready.
           </p>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
             {dashboard.domains.map((card) => (
-              <DomainCard key={card.domain.id} card={card} />
+              <div key={card.domain.id} className="min-w-0">
+                <DomainCard card={card} />
+              </div>
             ))}
           </div>
         )}

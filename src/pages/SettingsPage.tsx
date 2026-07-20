@@ -77,9 +77,9 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-2xl space-y-6 p-6">
+    <div className="mx-auto w-full max-w-2xl space-y-6 p-4 pb-8 sm:p-6">
       <header>
-        <h1 className="text-2xl font-bold">Settings</h1>
+        <h1 className="text-xl font-bold sm:text-2xl">Settings</h1>
         <p className="text-sm text-muted-foreground">
           Your command center and its satellites.
         </p>
@@ -105,14 +105,19 @@ export default function SettingsPage() {
               {connections.map((c) => (
                 <li
                   key={c.id}
-                  className="flex items-center justify-between rounded-md border border-border px-3 py-2 text-sm"
+                  className="flex flex-col gap-2 rounded-md border border-border px-3 py-2 text-sm sm:flex-row sm:items-center sm:justify-between"
                 >
-                  <span>
+                  <span className="min-w-0 break-words">
                     {c.provider}
                     {c.account_email ? ` · ${c.account_email}` : ""}
                     <span className="ml-2 text-xs text-muted-foreground">{c.status}</span>
                   </span>
-                  <Button variant="ghost" size="sm" onClick={() => void disconnect(c.id)}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="self-start sm:self-auto"
+                    onClick={() => void disconnect(c.id)}
+                  >
                     Disconnect
                   </Button>
                 </li>
