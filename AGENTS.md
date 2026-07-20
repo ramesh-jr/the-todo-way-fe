@@ -2,53 +2,51 @@
 
 ## Project Overview
 
-Personal productivity app with 3 views: Inbox, Calendar, Todos. Built with React + TypeScript, using FullCalendar for the calendar and static JSON for dummy data (backend not yet built).
+Personal Life Command Center: capture → clarify → engage → review. Surfaces: Today, Inbox, Calendar, Domains, Review, Settings. React + TypeScript; FullCalendar; PWA. Offline via static provider; live API when `VITE_API_URL` is set.
 
 ## Tech Stack
 
-- React 19, TypeScript, Vite 6
+- React 19, TypeScript, Vite
 - Tailwind CSS 4, shadcn/ui (Radix UI primitives)
-- FullCalendar v6 (MIT): @fullcalendar/react, @fullcalendar/timegrid, @fullcalendar/daygrid, @fullcalendar/interaction
-- Zustand (state management)
-- React Router v7, React Hook Form + Zod
-- Axios (for future API integration)
-- Lucide React (icons), Inter (font)
+- FullCalendar v6: `@fullcalendar/react`, timegrid, daygrid, interaction
+- Zustand, React Router v7, React Hook Form + Zod, Axios, Lucide React
 
 ## Architecture
 
-**Routing**: `/` (Landing), `/inbox`, `/calendar`, `/todos`, `/login`
+**Routing**: `/` (landing), `/today`, `/inbox`, `/calendar`, `/domains`, `/review`, `/settings`, `/login`, onboarding
 
-**State**: 3 Zustand stores -- `todoStore` (todos CRUD), `sectionStore` (sections/labels), `uiStore` (theme, sidebar, calendar view, card display prefs). UI store persisted to localStorage.
+**State**: `itemStore`, `domainStore`, `reviewStore`, `uiStore` (theme/sidebar/prefs; UI store persisted).
 
-**Data Layer**: `src/data/provider.ts` abstracts the data source. Currently returns static JSON. Will be swapped to `apiProvider.ts` (axios) when backend is ready. Stores call the provider, never import JSON directly.
+**Data Layer**: `src/data/provider.ts` — `staticProvider` (offline seed) or `apiProvider` when `VITE_API_URL` is set. Stores call the provider only.
 
-**Components**: Located in `src/components/{domain}/`. Shared UI in `src/components/ui/` (shadcn). Pages in `src/pages/`.
+**Components**: `src/components/{domain}/`. Shared UI in `src/components/ui/`. Pages in `src/pages/`.
 
 ## Key Patterns
 
-- **Optimistic updates**: Zustand `set()` immediately, rollback on API failure (future)
-- **FullCalendar integration**: Todos mapped to FC events via `todoToFCEvent()`. External drag uses FC `Draggable` class. Events: `eventReceive` (external drop), `eventDrop` (reschedule), `eventResize` (duration change), `eventClick` (open detail), `dateClick` (create todo)
-- **Design system**: All colors via CSS custom properties (HSL) in `globals.css`. Primary: Indigo-600. Components use Tailwind classes referencing these tokens. No hardcoded hex in components.
-- **Dark mode**: Tailwind `class` strategy. System preference + manual toggle. Persisted in `uiStore`.
+- Optimistic updates in stores where appropriate; rollback on API failure when wired.
+- FullCalendar: items → events; drag/drop/resize/click for schedule + detail.
+- Design system tokens in `globals.css` (HSL CSS variables). No hardcoded hex in components.
+- Dark mode: Tailwind `class` strategy; persisted in `uiStore`.
+- PWA: `public/sw.js`, `src/lib/pwa.ts`, web-push subscription against backend VAPID.
 
 ## File Naming
 
-- Components: PascalCase (`TodoCard.tsx`)
-- Hooks: `use` prefix (`useTodos.ts`)
-- Stores: camelCase + Store suffix (`todoStore.ts`)
-- Utils: camelCase (`dateHelpers.ts`)
-- Types: PascalCase in `src/types/` (`todo.ts` exports `interface Todo`)
+- Components: PascalCase (`CaptureBar.tsx`)
+- Hooks: `use` prefix
+- Stores: camelCase + `Store` (`itemStore.ts`)
+- Utils: camelCase
+- Types: PascalCase in `src/types/`
 
 ## Conventions
 
-- TypeScript strict mode. No `any` -- use `unknown` + type guards.
-- All form validation with Zod schemas.
+- TypeScript strict. No `any` — use `unknown` + guards.
+- Form validation with Zod.
 - Conventional Commits: `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, `test:`
-- Co-locate tests next to source: `TodoCard.test.tsx`
-- All colors from design system tokens (never hardcode hex in components)
+- Co-locate tests: `Foo.test.tsx`
+- Colors from design tokens only
 
 ## Reference Docs
 
-- `docs/lld.md` -- Detailed component interfaces, store shapes, API contracts
-- `docs/design-system.md` -- Color palette, typography, spacing
-- `docs/plans/` -- Versioned project plans
+- `docs/lld-frontend.md`, `docs/architecture.md`, `docs/design-system.md`
+- `docs/plans/v3-life-command-center.md`
+- Backend ops: `the-todo-way-be/docs/ops-pending.md`

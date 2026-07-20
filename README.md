@@ -1,58 +1,48 @@
 # The Todo Way - Frontend
 
-A personal productivity app with Todoist-like features including Inbox, Calendar (Outlook-style with FullCalendar), and drag-and-drop scheduling.
+Personal **Life Command Center**: Today, Inbox (capture → clarify), Calendar, Domains, Review, Settings. Installable PWA. Works offline with static seed data; point at the API with `VITE_API_URL` for a live backend.
 
 ## Tech Stack
 
-- **React 19** + TypeScript
-- **Vite 6** (build tool)
-- **Tailwind CSS 4** + **shadcn/ui** (UI)
-- **FullCalendar v6** (calendar views, drag-and-drop)
-- **Zustand** (state management)
-- **React Router v7** (routing)
-- **React Hook Form** + **Zod** (forms & validation)
+- **React 19** + TypeScript + **Vite**
+- **Tailwind CSS 4** + **shadcn/ui**
+- **FullCalendar v6**
+- **Zustand**, **React Router v7**, **React Hook Form** + **Zod**, **Axios**
 
 ## Getting Started
 
 ```bash
-# Install dependencies
 npm install
-
-# Start dev server
-npm run dev
-
-# Build for production
-npm run build
+cp .env.example .env   # optional — omit VITE_API_URL for offline static mode
+npm run dev            # http://localhost:5173
 ```
+
+### Live API
+
+1. Run the backend (`the-todo-way-be`) on port 8000 with migrations applied.
+2. In `.env`:
+   ```
+   VITE_API_URL=http://localhost:8000
+   ```
+3. Restart Vite, open `/login` (or onboarding), create the first account via setup.
+
+Human ops (OAuth, VAPID, email, deploy): see **the-todo-way-be** `docs/ops-pending.md`.
 
 ## Project Structure
 
 ```
 src/
-  components/
-    ui/              # shadcn/ui components
-    todo/            # TodoCard, TodoDetailPopup, CreateTodoDialog
-    calendar/        # CalendarView, MiniCalendar, FullCalendarWrapper
-    inbox/           # InboxList, InboxFilters
-    layout/          # MainLayout, Sidebar, TopBar
-    landing/         # LandingPage (split pane)
-  hooks/             # Custom hooks
-  stores/            # Zustand stores (todoStore, sectionStore, uiStore)
-  data/              # Static JSON dummy data + data provider
-  types/             # TypeScript interfaces
-  lib/               # Utilities, date helpers
-  styles/            # globals.css, FullCalendar overrides
-  pages/             # Route-level page components
-  App.tsx
-  main.tsx
+  components/   # capture, inbox, calendar, domains, review, layout, ui
+  pages/        # Today, Inbox, Calendar, Domains, Review, Settings, Login, …
+  stores/       # itemStore, domainStore, reviewStore, uiStore
+  data/         # provider.ts → staticProvider | apiProvider
+  types/
+  lib/          # auth, pwa, quickAdd, date helpers
 ```
-
-## Current Status
-
-**Frontend-first development**: The UI is built with static JSON dummy data. When the backend is ready, swap `src/data/provider.ts` to use the real API client.
 
 ## Documentation
 
-- [Design System](docs/design-system.md)
-- [Low-Level Design](docs/lld.md)
-- [Plans](docs/plans/)
+- [Architecture](docs/architecture.md)
+- [Frontend LLD](docs/lld-frontend.md)
+- [Design system](docs/design-system.md)
+- [v3 plan](docs/plans/v3-life-command-center.md)
